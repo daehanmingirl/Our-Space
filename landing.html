@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our Space — Rumah kita, tersusun</title>
+<meta name="description" content="App web untuk pasangan: task, chores bergilir, duit, stok rumah & shopping list. Guna Google akaun sendiri, data dalam Drive korang.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#F4EDE2;--card:#FBF8F3;--card-2:#F0E7DA;--line:#E8DDCC;
+ --ink:#352D29;--ink-2:#827465;--cocoa:#8F6D5D;--pink:#C58299;--blue:#6686A3;
+ --shadow:0 1px 2px rgba(53,45,41,.05);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;font:16px/1.6 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.disp{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;letter-spacing:-.02em}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+a{color:var(--cocoa)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:12px 22px;border-radius:16px;font-weight:700;font-size:16px;text-decoration:none;transition:transform .12s}
+.btn:active{transform:scale(.99)}
+.btn-pri{background:var(--cocoa);color:#fff}
+.btn-out{background:transparent;color:var(--cocoa);border:1.5px solid var(--cocoa)}
+.btn-pink{background:var(--pink);color:#fff}
+header{padding:28px 0 8px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.hero{padding:36px 0 28px;text-align:center}
+.hero h1{font-size:clamp(34px,9vw,52px);line-height:1.05;margin:14px 0 12px}
+.hero p{color:var(--ink-2);font-size:17px;margin:0 auto 24px;max-width:460px}
+.pair{display:inline-flex}
+.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero .note{font-size:13px;margin-top:14px}
+section{padding:28px 0}
+h2{font-size:26px;line-height:1.2;margin:0 0 8px}
+.sub{color:var(--ink-2);margin:0 0 20px}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px;margin-top:12px;box-shadow:var(--shadow)}
+.feat h3{margin:8px 0 4px;font-size:17px}
+.feat p{margin:0;color:var(--ink-2);font-size:14.5px}
+.feat .ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--card-2)}
+.feat .ic.p{color:var(--pink)}.feat .ic.b{color:var(--blue)}.feat .ic.c{color:var(--cocoa)}
+.feat ul{margin:10px 0 0;padding-left:18px;color:var(--ink-2);font-size:14.5px}
+.how{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+.how ol{margin:8px 0 0;padding-left:20px;color:var(--ink-2);font-size:15px}
+.how li{margin-bottom:8px}
+.how b{color:var(--ink)}
+.faq{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:10px;box-shadow:var(--shadow)}
+.faq summary{padding:15px 18px;font-weight:600;cursor:pointer}
+.faq p{margin:0;padding:0 18px 15px;color:var(--ink-2);font-size:15px}
+.priv{background:var(--card-2);border-radius:20px;padding:20px;font-size:15px;color:var(--ink-2)}
+.priv b{color:var(--ink)}
+footer{text-align:center;color:var(--ink-2);font-size:13px;padding:28px 0 44px}
+.mark{width:40px;height:40px}
+@media (min-width:600px){.hero h1{font-size:56px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+ <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" fill="var(--pink)"/><circle cx="25" cy="20" r="11" fill="var(--blue)"/><path d="M20 10.2A11 11 0 0 1 20 29.8A11 11 0 0 1 20 10.2Z" fill="var(--cocoa)"/></svg>
+ Our Space
+</header>
+
+<section class="hero">
+ <div class="pair">
+  <svg width="72" height="72" viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" fill="var(--pink)"/><circle cx="25" cy="20" r="11" fill="var(--blue)"/><path d="M20 10.2A11 11 0 0 1 20 29.8A11 11 0 0 1 20 10.2Z" fill="var(--cocoa)"/></svg>
+ </div>
+ <h1 class="disp">Rumah korang,<br>tersusun berdua.</h1>
+ <p>Task, chores bergilir, commitment bulanan, gaji, stok rumah & shopping list — semua dalam satu app yang dibina khas untuk <b>2 orang</b>.</p>
+ <div class="cta">
+  <a class="btn btn-pink" href="index.html">Cuba demo</a>
+  <a class="btn btn-out" href="#BELI">Beli template</a>
+ </div>
+ <p class="note">Demo jalan dalam browser ni je — data demo simpan lokal, tak dihantar ke mana-mana.</p>
+</section>
+
+<section>
+ <h2 class="disp">Apa ada dalam Our Space</h2>
+ <p class="sub">Dibina untuk pasangan yang duduk sama & kongsi tanggungjawab.</p>
+
+ <div class="feat">
+  <div class="ic p"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12.2l2.4 2.4 4.6-5"/></svg></div>
+  <h3>Tasks & chores bergilir</h3>
+  <p>Task harian, appointment & chores. Set ulangan harian/mingguan/bulanan, on <b>Bergilir</b> bila nak tukar giliran antara korang setiap kali siap.</p>
+  <ul>
+   <li>Task milik sendiri atau Shared</li>
+   <li>Calendar bulanan: task, bil & meal plan</li>
+   <li>Butang nudge ke WhatsApp partner</li>
+  </ul>
+ </div>
+
+ <div class="feat">
+  <div class="ic b"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="6" width="17" height="13.5" rx="3"/><path d="M3.5 10.5h17M15.5 15h2"/><path d="M6 6l9-2.5 1 2.5"/></svg></div>
+  <h3>Finance berdua</h3>
+  <p>Commitment bulanan (sewa, bil, langganan) & gaji. Tengok baki selepas commitment & simpanan, sama-sama.</p>
+  <ul>
+   <li>Shared dikira 50/50 automatik</li>
+   <li>Bulan baru commitment mula Unpaid, rekod lama kekal</li>
+   <li>Saving goals & contribution</li>
+  </ul>
+ </div>
+
+ <div class="feat">
+  <div class="ic c"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5L12 3.5l8.5 4v9L12 20.5l-8.5-4z"/><path d="M3.5 7.5L12 11.5l8.5-4M12 11.5v9"/></svg></div>
+  <h3>Household</h3>
+  <p>Stok barang rumah, shopping list & meal plan mingguan.</p>
+  <ul>
+   <li>Tick dah beli → stok naik sekali</li>
+   <li>Bahan meal plan tak cukup → masuk shopping list</li>
+   <li>Barang habis → hantar senarai ke WhatsApp</li>
+  </ul>
+ </div>
+
+ <div class="feat">
+  <div class="ic b"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></svg></div>
+  <h3>Records & file Drive</h3>
+  <p>Simpan fail penting (geran, insurans, warranty) dalam Google Drive korang, susun ikut folder.</p>
+  <ul>
+   <li>“Only me” — fail peribadi partner tak nampak</li>
+   <li>Tag partner & tarikh expire/renew</li>
+   <li>History: siapa siap apa & bayar apa</li>
+  </ul>
+ </div>
+
+ <div class="feat">
+  <div class="ic p"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5l1.2-3.6A7.8 7.8 0 1 1 8.6 18.6z"/><path d="M9.2 9.3c.3 2.2 2.3 4.6 5.4 5.4l1.1-1.2-1.6-.9-.8.8c-1.2-.4-2.2-1.4-2.7-2.6l.8-.8-.8-1.7z"/></svg></div>
+  <h3>WhatsApp nudge & email pagi</h3>
+  <p>Butang nudge buka WhatsApp dengan mesej siap taip — bil belum bayar, barang habis, task tertunggu. Kau yang tekan Send. Optional: email ringkasan setiap pagi.</p>
+ </div>
+</section>
+
+<section>
+ <h2 class="disp">Cara mula</h2>
+ <p class="sub">Sekali setup, ±15 minit. Lepas tu guna kat phone.</p>
+ <div class="how">
+  <ol>
+   <li><b>Beli & copy template</b> — kau dapat link project Google Apps Script. Tekan <b>Make a copy</b>.</li>
+   <li><b>Isi 2 email</b> dalam CONFIG & tekan Run pada function <b>setup</b>. Google Sheets & folder Drive dibina automatik.</li>
+   <li><b>Deploy sebagai web app</b> — dapat link. Buka dalam Chrome, isi nama & warna, hantar link ke partner.</li>
+   <li><b>Add to Home screen</b> — jadi macam app Android.</li>
+  </ol>
+ </div>
+</section>
+
+<section>
+ <h2 class="disp">Soalan lazim</h2>
+ <details class="faq"><summary>Data kami selamat?</summary><p>Data korang duduk dalam Google Sheets & Drive akaun Google korang sendiri. Penjual takde server & tak boleh nampak data. App cuma terima 2 email yang korang isi dalam CONFIG.</p></details>
+ <details class="faq"><summary>Perlu bayar bulanan?</summary><p>Tak. Bayar sekali untuk template. Semua benda yang app guna (Google Sheets, Drive, Apps Script) ada percuma akaun Google biasa.</p></details>
+ <details class="faq"><summary>Jalan kat Android & iPhone?</summary><p>App web — jalan dalam browser Chrome/Safari kat mana-mana phone. Di Android boleh Add to Home screen, nampak macam app betul.</p></details>
+ <details class="faq"><summary>Kalau partner dua orang guna, sync macam mana?</summary><p>Dua-dua buka link yang sama. Data sync melalui Google Sheets — bila partner buka app, perubahan korang masuk. Kalau offline, app simpan dulu dalam phone & cuba hantar balik sendiri.</p></details>
+ <details class="faq"><summary>Boleh tambah orang lain? Anak / parents?</summary><p>Versi ni dibina untuk 2 orang. Feature untuk tambah ahli keluarga lain dalam perancangan (coming soon), tapi template semasa hanya sokong 2 akaun.</p></details>
+</section>
+
+<section>
+ <h2 class="disp">Privasi</h2>
+ <div class="priv">
+  <p><b>Penjual tak pegang data korang.</b> Tiada server penjual, tiada database penjual, tiada analytics penjual. Semua data (task, duit, fail) tinggal dalam akaun Google korang sendiri selepas korang copy template.</p>
+  <p>App guna kebenaran Google (Sheets, Drive, Gmail) <b>dalam akaun korang sendiri</b> untuk setup & daily brief. Nombor WhatsApp yang korang isi dalam Settings tersimpan dalam Sheets korang & guna untuk buka link wa.me sahaja — tiada mesej dihantar automatik; korang tekan Send sendiri.</p>
+ </div>
+</section>
+
+<div class="cta" style="padding-bottom:8px">
+ <a class="btn btn-pri" href="index.html">Cuba demo percuma</a>
+ <a class="btn btn-out" href="#BELI">Beli template</a>
+</div>
+
+<footer>Our Space — template web app untuk pasangan.<br><a href="index.html">Demo</a></footer>
+
+</div>
+</body>
+</html>

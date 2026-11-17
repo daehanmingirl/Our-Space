@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Our Space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#F4EDE2;--card:#FBF8F3;--card-2:#F0E7DA;--line:#E8DDCC;--field:#F4EDE2;
+ --ink:#352D29;--ink-2:#827465;--ink-3:#A39585;--ink-c:#352D29;--ink-c2:#827465;--ink-c3:#A39585;
+ --cocoa:#8F6D5D;--on-cocoa:#FFFFFF;--grad:#C58299;--accent-bg:#8F6D5D;
+ --pa:#C58299;--pb:#6686A3;--focus:#6686A3;--danger:#B04E45;--warn:#A9762B;--ok:#5E8A50;
+ --shadow:0 1px 2px rgba(53,45,41,.05);--sheet-shadow:0 -8px 32px rgba(53,45,41,.14);
+ color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root[data-pal="blue"]{--bg:#EDF3F8;--card:#FFFFFF;--card-2:#E3ECF4;--line:#D3E0EB;--field:#F3F7FB;--ink:#1E2A35;--ink-2:#5B6E7E;--ink-3:#8698A7;--ink-c:#1E2A35;--ink-c2:#5B6E7E;--ink-c3:#8698A7;--cocoa:#2A6F9E;--grad:#4FA3C7;--accent-bg:#2A6F9E}
+:root[data-pal="sage"]{--bg:#EDF1E8;--card:#FBFCF8;--card-2:#E2E9DA;--line:#D5DECB;--field:#F1F4EC;--ink:#2B3328;--ink-2:#667262;--ink-3:#93A08D;--ink-c:#2B3328;--ink-c2:#667262;--ink-c3:#93A08D;--cocoa:#6A8A5E;--grad:#A7BF8C;--accent-bg:#6A8A5E}
+/* Dark: backdrop gelap, kotak cerah */
+:root[data-theme="dark"]{--bg:#1E1915;--card:#F7F0E6;--card-2:#ECE2D4;--line:#E2D5C3;--field:#FFFFFF;--ink:#F3EBE1;--ink-2:#C8B9A8;--ink-3:#9C8E80;--ink-c:#33291F;--ink-c2:#7A6A5B;--ink-c3:#A08F7F;--accent-bg:#E7C4B1;--shadow:0 2px 10px rgba(0,0,0,.35);--sheet-shadow:0 -8px 32px rgba(0,0,0,.5);color-scheme:dark}
+:root[data-theme="dark"][data-pal="blue"]{--bg:#0F1A24;--card:#F2F7FB;--card-2:#E0EAF3;--line:#CFDDE9;--ink:#E8F0F7;--ink-2:#A9BCCB;--ink-3:#7F93A3;--ink-c:#1B2833;--ink-c2:#566B7C;--ink-c3:#8597A6;--accent-bg:#8CC6E6}
+:root[data-theme="dark"][data-pal="sage"]{--bg:#151B14;--card:#F2F5EE;--card-2:#E1E8D8;--line:#D2DCC6;--ink:#EBF0E6;--ink-2:#B6C2AE;--ink-3:#8A9685;--ink-c:#263023;--ink-c2:#62705D;--ink-c3:#909C8A;--accent-bg:#BFD6A8}
+.card,.mcard,.ftile,.sheet,.chip,.seg,.btn,input,select,textarea,.nav,.md,.ib,.who-btn,.stp button,.toast{--ink:var(--ink-c);--ink-2:var(--ink-c2);--ink-3:var(--ink-c3);color:var(--ink)}
+.swatch{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink-c);font-weight:600;text-align:left}
+.swatch[aria-pressed="true"]{border-color:var(--ink-c);box-shadow:inset 0 0 0 1px var(--ink-c)}
+.swatch .dots{display:flex}.swatch .dots i{width:22px;height:22px;border-radius:50%;border:2px solid var(--card);margin-left:-6px}.swatch .dots i:first-child{margin-left:0}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{background:var(--bg)}
+body{margin:0;font:15px/1.5 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.disp{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--ink-2)}.faint{color:var(--ink-3)}.small{font-size:13px}.tiny{font-size:12px}
+.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}.grow{flex:1;min-width:0}
+.stack{display:grid;gap:12px}
+
+/* Shell */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:16px}
+.tools{display:flex;gap:6px;align-items:center}
+.ib{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;padding:0;position:relative;flex:none}
+.badge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
+.avbtn{border:0;background:none;padding:0;border-radius:50%}
+main{max-width:760px;margin:0 auto;padding:4px 18px 110px}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+.nav button{flex:1;min-width:0;border:0;background:none;color:var(--ink-3);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:6px 0;border-radius:12px}
+.nav button{transition:background .2s,color .2s}
+.nav button[aria-current="page"]{color:#fff;background:linear-gradient(135deg,var(--cocoa) 0%,var(--grad) 100%);box-shadow:0 4px 12px color-mix(in srgb,var(--cocoa) 35%,transparent);margin:0 3px}
+.nav button[aria-current="page"] svg{stroke-width:2.2}
+.nav .side{display:none}
+@media (min-width:900px){
+ .nav{top:0;right:auto;width:220px;flex-direction:column;gap:2px;padding:calc(18px + env(safe-area-inset-top,0px)) 12px;border-top:0;border-right:1px solid var(--line)}
+ .nav .side{display:flex;margin:0 8px 18px}
+ .nav button{flex:none;flex-direction:row;gap:12px;font-size:14px;padding:10px 12px;color:var(--ink-2)}
+ .nav button[aria-current="page"]{color:#fff;margin:0}
+ .app{padding-left:220px}.topbar .brand{visibility:hidden}
+}
+
+/* Type & sections */
+.ph{margin:8px 0 14px}
+.ph h1{font-size:28px;line-height:1.1;margin:0}
+.ph p{margin:4px 0 0;color:var(--ink-2);font-size:14px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 8px;font-size:15px;font-weight:700}
+.sec-h .link{font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow)}
+.card+.card{margin-top:10px}
+.link{border:0;background:none;padding:6px 0;color:var(--accent-bg);font-weight:600;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+
+/* Buttons & inputs */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:14px;text-decoration:none;color:var(--ink);white-space:nowrap}
+a.btn{text-decoration:none}
+.btn.pri{background:var(--cocoa);border-color:var(--cocoa);color:var(--on-cocoa)}
+.btn.danger{color:var(--danger)}
+.btn.sm{min-height:38px;padding:7px 14px;font-size:13.5px;border-radius:12px}
+.btn.block{width:100%}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;margin:12px 0 4px;border:0;border-radius:16px;background:var(--cocoa);color:var(--on-cocoa);font-size:16px;font-weight:700;box-shadow:0 2px 8px color-mix(in srgb,var(--cocoa) 28%,transparent)}
+.add-btn:active{transform:scale(.99)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.wa{color:#1f7a4d;border-color:color-mix(in srgb,#25D366 40%,var(--line))}
+:root[data-theme="dark"] .btn.wa{color:#6fd7a2}
+.seg{display:inline-flex;background:var(--card-2);border-radius:13px;padding:3px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:10px;font-size:13px;font-weight:600;color:var(--ink-2);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(53,45,41,.1)}
+.seg.full{display:flex}.seg.full button{flex:1;justify-content:center}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.chip{min-height:38px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--ink-2);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--ink-c);border-color:var(--ink-c);color:var(--card)}
+.chip.add{border-style:dashed}
+input,select,textarea{width:100%;min-height:48px;padding:11px 14px;border-radius:14px;border:1px solid var(--line);background:var(--field);font-size:16px}
+input[type=checkbox]{min-height:0}
+textarea{min-height:72px;resize:vertical}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--cocoa);flex:none}
+.field{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.field .hint{font-weight:400;color:var(--ink-3);font-size:12px}
+.field.err input,.field.err select{border-color:var(--danger)}
+.field .msg{color:var(--danger);font-weight:500;font-size:12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checkline{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:500;color:var(--ink)}
+.quick{display:flex;gap:8px;align-items:stretch}
+.quick input{flex:1;min-width:0}
+.quick .qty{width:72px;flex:none;text-align:center}
+.quick .btn{min-height:48px;padding:0 18px;font-size:15px}
+
+/* People */
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff;background:var(--c);flex:none}
+.av.sm{width:22px;height:22px;font-size:11px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c);display:inline-block;flex:none}
+.who{display:inline-flex;align-items:center;gap:5px}
+
+/* Lists */
+.list{list-style:none;margin:0;padding:0}
+.list>li{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);min-height:58px}
+.list>li:first-child{border-top:0}
+.rb{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer;border-radius:10px}
+.rb:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.title{font-weight:600;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.ck{width:24px;height:24px;border-radius:8px;border:1.6px solid var(--ink-3);background:transparent;display:grid;place-items:center;padding:0;flex:none;color:var(--on-cocoa)}
+.ck[aria-checked="true"]{background:var(--cocoa);border-color:var(--cocoa)}
+.done .title{text-decoration:line-through;color:var(--ink-3);font-weight:500}
+.group-h{font-size:12.5px;font-weight:700;color:var(--ink-2);margin:14px 2px 2px;display:flex;justify-content:space-between}
+.group-h.red{color:var(--danger)}
+.empty{text-align:center;padding:22px 10px;color:var(--ink-2)}
+.empty p{margin:0 0 12px}
+.pill{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap;background:var(--card-2);color:var(--ink-2)}
+.pill.low{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+.pill.out,.pill.red{background:color-mix(in srgb,var(--danger) 14%,transparent);color:var(--danger)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.stp{display:flex;align-items:center;gap:2px}
+.stp button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;padding:0;font-size:17px}
+.stp span{min-width:30px;text-align:center;font-weight:700}
+.bar{height:6px;border-radius:999px;background:var(--card-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c,var(--cocoa));border-radius:inherit}
+
+/* Home */
+.hello{padding:10px 2px 6px}
+.hello .date{color:var(--ink-2);font-size:14px;margin:0}
+.hello h1{font-size:clamp(44px,13vw,64px);line-height:.98;margin:6px 0 4px;font-weight:700}
+.hello .pair{display:inline-flex;vertical-align:middle;margin-left:6px}
+.hello p{margin:0;color:var(--ink-2)}
+.trow{display:flex;align-items:center;gap:12px;padding:10px 0}
+.trow+.trow{border-top:1px solid var(--line)}
+.ti{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--card-2);color:var(--cocoa)}
+.money{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcard{all:unset;box-sizing:border-box;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px;display:grid;gap:2px}
+.mcard .amt{font-family:"Bricolage Grotesque",Figtree,sans-serif;font-size:clamp(22px,6.5vw,30px);font-weight:700;color:var(--c);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.banner{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:color-mix(in srgb,var(--cocoa) 10%,var(--card));border-color:color-mix(in srgb,var(--cocoa) 30%,var(--line))}
+
+/* Calendar */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin:10px 0}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.mh{font-size:11.5px;color:var(--ink-3);text-align:center;padding:4px 0;font-weight:600}
+.md{border:0;background:var(--card);border-radius:12px;min-height:54px;padding:5px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px}
+.md.out{background:transparent;color:var(--ink-3)}
+.md .n{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:600}
+.md.today .n{background:var(--cocoa);color:var(--on-cocoa)}
+.md[aria-pressed="true"]{outline:2px solid var(--cocoa);outline-offset:-2px}
+.md .dots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;max-width:36px}
+.ev{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.ev:first-child{border-top:0}
+.ev .bar-v{width:4px;align-self:stretch;border-radius:4px;background:var(--c)}
+.ev.ghost{opacity:.6}
+
+/* Sheet, confirm, toast */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(28,24,21,.38);opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--card);border-radius:24px 24px 0 0;max-height:92vh;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .26s cubic-bezier(.2,.8,.2,1);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:var(--sheet-shadow)}
+.sheet.open{transform:none}
+@media (min-width:900px){.sheet{left:50%;right:auto;bottom:auto;top:50%;width:480px;max-height:86vh;border-radius:24px;transform:translate(-50%,-46%);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}.sheet.open{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{transition:none}}
+.sh-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px 8px}
+.sh-h h2{margin:0;font-size:18px}
+.sh-b{padding:4px 18px 18px;overflow:auto;display:grid;gap:14px}
+.sh-a{display:flex;gap:8px;justify-content:space-between;align-items:center;padding-top:4px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:80;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:14px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:var(--danger);color:#fff}
+@media (min-width:900px){.toast{bottom:28px}}
+.login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login-box{width:100%;max-width:360px;text-align:center}
+.login h1{font-size:40px;margin:12px 0 6px}
+.who-btn{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;margin-top:10px;border-radius:16px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:600;text-align:left}
+.who-btn small{display:block;font-weight:400;color:var(--ink-3);font-size:13px}
+details.tip{border-top:1px solid var(--line);padding:11px 0}
+details.tip:first-of-type{border-top:0}
+details.tip summary{cursor:pointer;font-weight:600}
+details.tip p,details.tip ul{margin:8px 0 0;color:var(--ink-2);font-size:14px}
+details.tip ul{padding-left:18px}
+.sync{font-size:11.5px;font-weight:600;color:var(--ink-3);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.sync[data-s="saving"]::before{background:var(--warn)}
+.sync[data-s="error"]{color:var(--danger)}.sync[data-s="error"]::before{background:var(--danger)}
+.status{text-align:center}.status h1{font-size:28px;margin:12px 0 6px}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:600px){.fgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ftile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:6px;min-height:104px;align-content:start}
+.ftile:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ftile .fi{color:var(--cocoa)}
+.ftile .fn{font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.ftile.new{border-style:dashed;color:var(--ink-2)}
+.crumb{display:flex;align-items:center;gap:10px;margin:12px 0 4px}
+.crumb h2{margin:0;font-size:20px;flex:1;min-width:0;overflow-wrap:anywhere}
+.fcard{display:grid;align-content:start;gap:0}
+.fcard .rowx{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--ink-2);padding:2px 0}
+.fcard .rowx b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fcard .tagline{min-height:22px;display:flex;align-items:center}
+.card .link,.sheet .link{color:var(--cocoa)}
+.pal-row{display:flex;gap:14px;flex-wrap:wrap}
+.pal{border:0;background:none;padding:4px;border-radius:50%}
+.pal-c{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.pal[aria-pressed="true"] .pal-c{outline:3px solid var(--ink-c);outline-offset:3px}
+.cpick{display:flex;gap:8px;flex-wrap:wrap}
+.cpick button{width:36px;height:36px;border-radius:50%;border:0;padding:0;display:grid;place-items:center;color:#fff}
+.cpick button[aria-pressed="true"]{outline:3px solid var(--ink-c);outline-offset:2px}
+.soon{text-align:center;padding:40px 16px}
+.soon h2{margin:8px 0}
+</style>
+</head>
+<body>
+<div id="login" class="login"><div class="login-box"><h1 class="disp">Our Space</h1><p class="muted">Loading…</p></div></div>
+<div id="app" class="app" hidden>
+ <header class="topbar">
+  <div class="row" style="gap:10px;min-width:0"><div class="brand" id="brand"></div><span class="sync" id="sync" data-s="ok" role="status" aria-live="polite" hidden></span></div>
+  <div class="tools">
+   <button class="ib" data-a="guide" id="bGuide" aria-label="Cara guna"></button>
+   <button class="ib" data-a="foryou" id="bBell" aria-label="Untuk kau"></button>
+   <button class="ib" data-a="theme" id="bTheme" aria-label="Tema & warna"></button>
+   <button class="avbtn" data-a="settings" id="bMe" aria-label="Settings"></button>
+  </div>
+ </header>
+ <main id="main"></main>
+ <nav class="nav" id="nav" aria-label="Main"></nav>
+</div>
+<div class="scrim" id="scrim" data-a="close"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+/* ---------- helpers ---------- */
+const IS_GAS=typeof google!=='undefined'&&!!(google.script&&google.script.run);
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+const dk=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const ymOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const today=new Date();today.setHours(0,0,0,0);
+const TK=dk(today),CUR=ymOf(today);
+const T=n=>dk(addD(today,n));
+const pk=k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const dfrom=k=>Math.round((pk(k)-today)/864e5);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>Number(v)||0;
+const sum=a=>a.reduce((x,y)=>x+num(y),0);
+const fmt0=n=>(num(n)<0?'−':'')+'RM'+Math.abs(Math.round(num(n))).toLocaleString('en-MY');
+const MON=['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
+const DAY=['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+const DAYS=['Isn','Sel','Rab','Kha','Jum','Sab','Aha'];
+const monL=m=>{const[y,mo]=m.split('-');return MON[+mo-1]+' '+y};
+const shiftM=(m,d)=>{const[y,mo]=m.split('-').map(Number);return ymOf(new Date(y,mo-1+d,1))};
+const dayL=k=>{const d=pk(k);return `${d.getDate()} ${MON[d.getMonth()]}`};
+const relL=k=>{const n=dfrom(k);if(n===0)return'Hari ni';if(n===1)return'Esok';if(n===-1)return'Semalam';if(n<-1)return `${-n} hari lepas`;if(n<7)return DAY[pk(k).getDay()];return dayL(k)};
+function t12(s){if(!s)return'';let[h,m]=s.split(':').map(Number);const ap=h>=12?'pm':'am';h=h%12||12;return m?`${h}:${pad(m)}${ap}`:`${h}${ap}`}
+const monday=d=>addD(d,-((d.getDay()+6)%7));
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const q=s=>`“${s}”`;
+
+/* ---------- people ---------- */
+const OWN={pa:{n:'Orang 1',c:'var(--pa)',i:'1'},pb:{n:'Orang 2',c:'var(--pb)',i:'2'},shared:{n:'Shared',c:'var(--cocoa)',i:'S'}};
+const PCOL=['#C58299','#6686A3','#C9874A','#6A8A5E','#8A6BB0','#3E9C9C','#B5544B','#5B6470'];
+const DEF_COL={pa:'#C58299',pb:'#6686A3'};
+function applyNames(){['pa','pb'].forEach((p,i)=>{const n=((db.names||{})[p]||'').trim();OWN[p].n=n||('Orang '+(i+1));OWN[p].i=n?n[0].toUpperCase():String(i+1);
+ const c=(db.colors||{})[p]||DEF_COL[p];document.documentElement.style.setProperty('--'+p,c)})}
+const needsNames=()=>!((db.names||{}).pa||'').trim()||!((db.names||{}).pb||'').trim();
+const av=(o,cls='')=>`<span class="av ${cls}" style="--c:${OWN[o].c}" aria-hidden="true">${OWN[o].i}</span>`;
+const dot=o=>`<span class="dot" style="--c:${OWN[o]?OWN[o].c:'var(--ink-3)'}"></span>`;
+const whoTag=o=>`<span class="who">${dot(o)}${OWN[o].n}</span>`;
+const PRI={1:'High',2:'Medium',3:'Low'};
+const ST={todo:'To do',doing:'In progress',done:'Done'};
+const REP={none:'Tak ulang',daily:'Setiap hari',weekly:'Setiap minggu',monthly:'Setiap bulan'};
+
+/* ---------- icons ---------- */
+const P={
+home:'<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+tasks:'<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12.2l2.4 2.4 4.6-5"/>',
+wallet:'<rect x="3.5" y="6" width="17" height="13.5" rx="3"/><path d="M3.5 10.5h17M15.5 15h2"/><path d="M6 6l9-2.5 1 2.5"/>',
+box:'<path d="M3.5 7.5L12 3.5l8.5 4v9L12 20.5l-8.5-4z"/><path d="M3.5 7.5L12 11.5l8.5-4M12 11.5v9"/>',
+folder:'<path d="M3.5 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/>',
+bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+book:'<path d="M5 4.5h9.5a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9.5"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+moon:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',left:'<path d="M15 5l-7 7 7 7"/>',right:'<path d="M9 5l7 7-7 7"/>',
+check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',close:'<path d="M6 6l12 12M18 6L6 18"/>',
+repeat:'<path d="M17 3.5l3 3-3 3"/><path d="M4 11.5v-2a3 3 0 0 1 3-3h13M7 20.5l-3-3 3-3"/><path d="M20 12.5v2a3 3 0 0 1-3 3H4"/>',
+swap:'<path d="M7 4L3.5 7.5 7 11M3.5 7.5h13M17 13l3.5 3.5L17 20M20.5 16.5h-13"/>',
+cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+list:'<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
+basket:'<path d="M3.5 9.5h17l-1.6 9a2 2 0 0 1-2 1.6H7.1a2 2 0 0 1-2-1.6z"/><path d="M8 9.5l3-5.5M16 9.5l-3-5.5"/>',
+target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+wa:'<path d="M4.5 19.5l1.2-3.6A7.8 7.8 0 1 1 8.6 18.6z"/><path d="M9.2 9.3c.3 2.2 2.3 4.6 5.4 5.4l1.1-1.2-1.6-.9-.8.8c-1.2-.4-2.2-1.4-2.7-2.6l.8-.8-.8-1.7z"/>',
+tag:'<path d="M3.5 12.2V4.5h7.7l9.3 9.3-7.7 7.7z"/><circle cx="8" cy="9" r="1.3"/>',
+doc:'<path d="M7 3.5h7l4.5 4.5v12.5H7a1.5 1.5 0 0 1-1.5-1.5V5A1.5 1.5 0 0 1 7 3.5z"/><path d="M14 3.5V8h4.5M9 13h6M9 16.5h4"/>',
+lock:'<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+palette:'<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.9 1.4-1.9l-.4-.9a1.6 1.6 0 0 1 1.5-2.2H17a3.5 3.5 0 0 0 3.5-3.5c0-4.7-3.8-8.5-8.5-8.5z"/><circle cx="7.5" cy="11" r="1.1"/><circle cx="10" cy="7.3" r="1.1"/><circle cx="14.5" cy="7.3" r="1.1"/>',
+meal:'<path d="M5 3.5v7a2.5 2.5 0 0 0 5 0v-7M7.5 3.5v17M16.5 20.5v-17c-2 1-3 4-3 7h3"/>'
+};
+const ic=(n,s=22,w=1.7)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+const mark=(s=26)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40" aria-hidden="true"><circle cx="15" cy="20" r="11" fill="var(--pa)"/><circle cx="25" cy="20" r="11" fill="var(--pb)"/><path d="M20 10.2A11 11 0 0 1 20 29.8A11 11 0 0 1 20 10.2Z" fill="var(--cocoa)"/></svg>`;
+
+/* ---------- demo data ---------- */
+function seed(){return emptyDb()}
+const KEY='ourspace.demo.db',PKEY='ourspace.prefs';
+const load=k=>{try{const r=localStorage.getItem(k);return r?JSON.parse(r):null}catch(e){return null}};
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let db=IS_GAS?emptyDb():(load(KEY)||seed());
+const prefs=Object.assign({user:null,theme:'light',pal:'cocoa',guideSeen:false,calShow:{bills:true,meals:true}},load(PKEY)||{});
+const save=()=>{if(IS_GAS){gasSave();return}store(KEY,db)};
+if(!IS_GAS&&!load(KEY))save();
+const savePrefs=()=>store(PKEY,prefs);
+const ME=()=>prefs.user,PARTNER=()=>prefs.user==='pa'?'pb':'pa';
+const state={view:'home',tView:'list',tOwner:'all',tStatus:'active',tDate:'all',calMonth:CUR,calDay:TK,hTab:'inv',invCat:'all',shopCat:'all',mealWeek:dk(monday(today)),finMonth:CUR,finTab:'sum',rTab:'files',rFolder:'root',rVis:'all',rType:'all',rWho:'all',rq:'',cOwner:'all',gOwner:'all',sheet:null,confirm:null};
+
+/* ---------- activity ---------- */
+function log(t3,tYou,forU,kind,ref){db.activity.unshift({id:uid(),who:ME(),t3,tYou,for:forU||[],kind,ref:ref||'',at:Date.now()});db.activity=db.activity.slice(0,300)}
+const forMe=()=>db.activity.filter(a=>a.who!==ME()&&a.for.includes(ME()));
+const unread=()=>forMe().filter(a=>a.at>(db.seen[ME()]||0)).length;
+function ago(ts){const s=(Date.now()-ts)/1e3;if(s<60)return'Baru tadi';if(s<3600)return Math.floor(s/60)+' min lepas';if(s<86400)return Math.floor(s/3600)+' jam lepas';const d=Math.floor(s/86400);return d===1?'Semalam':d+' hari lepas'}
+
+/* ---------- toast & confirm ---------- */
+let tTimer=null;
+function toast(msg,err){const el=$('#toast');el.textContent=msg;el.className='toast show'+(err?' err':'');clearTimeout(tTimer);tTimer=setTimeout(()=>el.className='toast',2400)}
+function choiceBox(title,body,opts){
+ return new Promise(res=>{state.confirm=res;
+  openSheet('confirm',title,`<div class="sh-b">${body?`<p style="margin:0" class="muted">${body}</p>`:''}<div class="stack" style="gap:8px">${opts.map(o=>`<button class="btn block ${o.cls||''}" data-a="cf-pick" data-v="${o.v}">${o.label}</button>`).join('')}<button class="btn block" data-a="cf-no">Batal</button></div></div>`)});
+}
+function confirmBox(title,body,okLabel='Delete',danger=true){
+ return new Promise(res=>{state.confirm=res;
+  openSheet('confirm',title,`<div class="sh-b"><p style="margin:0" class="muted">${body}</p><div class="sh-a"><button class="btn" data-a="cf-no">Batal</button><button class="btn ${danger?'danger':'pri'}" data-a="cf-yes">${okLabel}</button></div></div>`)});
+}
+
+/* ---------- WhatsApp nudge ---------- */
+function waBtn(to,text,label){
+ const ph=String(db.phones[to]||'').replace(/\D/g,'');
+ if(!ph)return `<button type="button" class="btn sm wa" data-a="wa-missing" data-to="${to}">${ic('wa',16)}${label}</button>`;
+ return `<a class="btn sm wa" href="https://wa.me/${ph}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">${ic('wa',16)}${label}</a>`;
+}
+/* ================= Sync with Google Sheets (Apps Script only) ================= */
+const gas=(fn,...a)=>new Promise((res,rej)=>google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](...a));
+const CACHE='ourspace.cache',PEND='ourspace.pending';
+const SH_TABLES=['tasks','categories','inventory','shopping','goals','contribs','files','activity'];
+function emptyDb(){return{tasks:[],files:[],categories:[],inventory:[],shopping:[],meals:{},commitments:[],occ:[],incomeLines:{pa:{},pb:{}},balOverride:{pa:{},pb:{}},goals:[],contribs:[],
+ phones:{pa:'',pb:''},brief:{pa:{on:false,time:'07:00'},pb:{on:false,time:'07:00'}},activity:[],seen:{pa:0,pb:0},names:{pa:'',pb:''},colors:{pa:'',pb:''}}}
+let srv={email:'',url:''},snap={},pending=[],flushing=false,fTimer=null,lastRefresh=0;
+if(IS_GAS)pending=load(PEND)||[];
+function fromServer(d){
+ const out=emptyDb(),set={},pj=(s,f)=>{try{return s?JSON.parse(s):f}catch(e){return f}};
+ (d.settings||[]).forEach(r=>set[r.id]=r.value);
+ SH_TABLES.forEach(k=>out[k]=d[k]||[]);
+ out.activity.sort((a,b)=>b.at-a.at);
+ (d.meals||[]).forEach(m=>out.meals[m.id]={name:m.name,ing:m.ing||[]});
+ out.commitments=(d.sharedCom||[]).slice();out.occ=(d.sharedOcc||[]).slice();
+ ['pa','pb'].forEach(p=>{const f=(d.fin||{})[p]||{};
+  out.commitments.push(...(f.commitments||[]));out.occ.push(...(f.occ||[]));
+  (f.income||[]).forEach(l=>{(out.incomeLines[p][l.month]=out.incomeLines[p][l.month]||[]).push({id:l.id,name:l.name,amount:l.amount,type:l.type})});
+  (f.balov||[]).forEach(o=>{if(o.value!==''&&o.value!=null)out.balOverride[p][o.month]=num(o.value)});
+  out.seen[p]=num(set['seen_'+p]);out.names[p]=set['name_'+p]||'';out.colors[p]=set['color_'+p]||'';out.brief[p]=pj(set['brief_'+p],{on:false,time:'07:00'});out.phones[p]=set['phone_'+p]||''});
+ return out;
+}
+function flat(){
+ const me=ME(),o={};SH_TABLES.forEach(k=>o[k]=db[k]);
+ o.meals=Object.entries(db.meals).map(([id,m])=>({id,name:m.name,ing:m.ing}));
+ const own=c=>c.owner;const cOwner={};db.commitments.forEach(c=>cOwner[c.id]=c.owner);
+ o.sharedCom=db.commitments.filter(c=>own(c)==='shared');o.sharedOcc=db.occ.filter(x=>cOwner[x.cid]==='shared');
+ o[`fin:${me}:commitments`]=db.commitments.filter(c=>own(c)===me);
+ o[`fin:${me}:occ`]=db.occ.filter(x=>cOwner[x.cid]===me);
+ o[`fin:${me}:income`]=[];Object.entries(db.incomeLines[me]||{}).forEach(([m,ls])=>ls.forEach(l=>o[`fin:${me}:income`].push({id:l.id,month:m,name:l.name,amount:l.amount,type:l.type})));
+ o[`fin:${me}:balov`]=Object.entries(db.balOverride[me]||{}).map(([m,v])=>({id:m,month:m,value:v}));
+ o.settings=[{id:'seen_'+me,value:String(db.seen[me]||0)},{id:'brief_'+me,value:JSON.stringify(db.brief[me]||{})},{id:'phone_'+me,value:db.phones[me]||''},...['pa','pb'].flatMap(p=>[{id:'name_'+p,value:(db.names||{})[p]||''},{id:'color_'+p,value:(db.colors||{})[p]||''}])];
+ return o;
+}
+function snapshot(){snap={};const f=flat();for(const k in f){snap[k]={};f[k].forEach(x=>snap[k][String(x.id)]=JSON.stringify(x))}}
+const opKey=x=>x.t+'|'+(x.op==='put'?String(x.o.id):String(x.id));
+function queue(op){const k=opKey(op);pending=pending.filter(x=>opKey(x)!==k);pending.push(op)}
+function gasSave(){
+ if(!ME())return;const f=flat();
+ for(const k in f){const prev=snap[k]||{},cur={};
+  f[k].forEach(x=>{const id=String(x.id),s=JSON.stringify(x);cur[id]=s;if(prev[id]!==s)queue({t:k,op:'put',o:JSON.parse(s)})});
+  for(const id in prev)if(!(id in cur))queue({t:k,op:'del',id});snap[k]=cur}
+ store(PEND,pending);store(CACHE,{me:ME(),db,srv});scheduleFlush();
+}
+function setSync(s){const el=$('#sync');if(!el)return;el.hidden=!IS_GAS;el.dataset.s=s;el.textContent=s==='saving'?'Saving…':s==='error'?'Offline':'Saved';el.title=s==='error'?'Tak dapat save. App cuba lagi sendiri.':''}
+function scheduleFlush(ms=300){clearTimeout(fTimer);setSync('saving');fTimer=setTimeout(flush,ms)}
+let errShown=false;
+function flush(){
+ if(flushing)return Promise.resolve();if(!pending.length){setSync('ok');return Promise.resolve()}
+ flushing=true;setSync('saving');const batch=pending.slice(0,150);
+ return gas('sync',batch).then(r=>{pending=pending.filter(x=>!batch.includes(x));store(PEND,pending);flushing=false;errShown=false;
+   if(r&&r.rejected&&r.rejected.length){toast(`${r.rejected.length} perubahan ditolak server (tiada kebenaran). Data refresh.`,true);lastRefresh=0;refresh(true)}
+   if(pending.length)return flush();setSync('ok')})
+  .catch(err=>{flushing=false;setSync('error');if(!errShown){toast('Tak dapat save. App simpan dalam phone & cuba lagi.',true);errShown=true}if(/NO_ACCESS/.test(String(err)))return;fTimer=setTimeout(flush,6000)});
+}
+function applyServer(r){prefs.user=r.me;savePrefs();srv={email:r.email,url:r.url};db=fromServer(r.data);snapshot();store(CACHE,{me:r.me,db,srv})}
+function statusScreen(h){$('#app').hidden=true;$('#login').hidden=false;$('#login').innerHTML=`<div class="login-box status">${mark(64)}${h}</div>`}
+function showOrRender(){if($('#app').hidden)showApp();else if(!state.sheet)render();else state.dirty=true}
+function bootGas(){
+ const c=load(CACHE);
+ if(c&&c.me&&c.db){prefs.user=c.me;db=Object.assign(emptyDb(),c.db);srv=c.srv||srv;snapshot();showApp();setSync(pending.length?'saving':'ok')}
+ else statusScreen('<h1 class="disp">Our Space</h1><p class="muted">Loading…</p>');
+ (pending.length?flush():Promise.resolve()).then(()=>gas('boot')).then(r=>{
+  if(!r.me){statusScreen(`<h1 class="disp">Akses ditolak</h1><p class="muted">Email <b>${esc(r.email||'tak dikenali')}</b> takde dalam senarai Our Space.</p><p class="small muted">Tukar akaun Google, atau minta tambah email dalam CONFIG.</p>`);return}
+  if(c&&c.me&&c.me!==r.me){pending=[];store(PEND,pending)}
+  if(pending.length)return;applyServer(r);lastRefresh=Date.now();showOrRender();
+ }).catch(e=>{const s=String(e&&e.message||e);if(c&&c.db){setSync('error');return}
+  statusScreen(/SETUP_NEEDED/.test(s)?'<h1 class="disp">Setup belum siap</h1><p class="muted">Run function <b>setup</b> dalam Apps Script editor dulu.</p>':`<h1 class="disp">Tak dapat sambung</h1><p class="muted">Check internet, lepas tu cuba lagi.</p><button class="btn pri" data-a="retry-boot">Cuba lagi</button>`)});
+}
+function refresh(force){
+ if(!IS_GAS||!ME()||$('#app').hidden)return;if(pending.length){flush();return}
+ if(!force&&Date.now()-lastRefresh<15000)return;lastRefresh=Date.now();
+ gas('boot').then(r=>{if(!r.me||pending.length)return;applyServer(r);showOrRender()}).catch(()=>setSync('error'));
+}
+if(IS_GAS){document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh()});setInterval(()=>{if(document.visibilityState==='visible')refresh()},60000)}
+function fileToB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(file)})}
+async function upload(file,path){
+ if(file.size>15*1024*1024)throw new Error('TOO_BIG');
+ const data=await fileToB64(file);return gas('uploadFile',{path,name:file.name,mime:file.type||'application/octet-stream',data});
+}
+/* ================= Finance core ================= */
+const activeC=m=>db.commitments.filter(c=>!c.archived&&c.start<=m&&(!c.endMonth||m<=c.endMonth)&&(c.repeat==='monthly'||c.start===m));
+const occOf=(c,m)=>db.occ.find(o=>o.id===m+'|'+c.id);
+const statusOf=(c,m)=>{const o=occOf(c,m);return o?o.status:'unpaid'};
+const isChild=c=>!!c.via&&db.commitments.some(x=>x.id===c.via||(x.prevIds||[]).includes(c.via));
+const kidsOf=(c,m)=>activeC(m).filter(x=>(x.via===c.id||(c.prevIds||[]).includes(x.via))&&statusOf(x,m)!=='skip');
+const baseAmt=(c,m)=>{const o=occOf(c,m);return num(o&&o.amount!=null&&o.amount!==''?o.amount:c.amount)};
+const amtOf=(c,m)=>{const o=occOf(c,m);if(o&&o.status==='paid'&&o.paidAmount!=null)return num(o.paidAmount);return baseAmt(c,m)+sum(kidsOf(c,m).map(k=>baseAmt(k,m)))};
+const dueOf=(c,m)=>{const o=occOf(c,m);const d=num(o&&o.dueDay||c.dueDay);if(!d)return 0;const last=new Date(+m.slice(0,4),+m.slice(5),0).getDate();return Math.min(d,last)};
+const listC=m=>activeC(m).filter(c=>!isChild(c));
+const shareOf=(c,p)=>c.owner===p?1:c.owner==='shared'?.5:0;
+const canFin=c=>c.owner===ME()||c.owner==='shared';
+const netOf=ls=>sum(ls.filter(l=>l.type!=='out').map(l=>l.amount))-sum(ls.filter(l=>l.type==='out').map(l=>l.amount));
+const linesOf=(p,m)=>(db.incomeLines[p]||{})[m]||[];
+function incomeInfo(p,m){const r=db.incomeLines[p]||{};if(r[m]&&r[m].length)return{v:netOf(r[m]),from:m};const ks=Object.keys(r).filter(k=>k<m&&r[k]&&r[k].length).sort();return ks.length?{v:netOf(r[ks[ks.length-1]]),from:ks[ks.length-1]}:{v:0,from:''}}
+const incomeFor=(p,m)=>incomeInfo(p,m).v;
+function finSum(p,m){
+ let total=0,paid=0;
+ listC(m).forEach(c=>{const st=statusOf(c,m);if(st==='skip')return;const s=shareOf(c,p);if(!s)return;const a=amtOf(c,m)*s;total+=a;if(st==='paid')paid+=a});
+ const contrib=sum(db.contribs.filter(x=>x.who===p&&x.date.slice(0,7)===m&&!(db.goals.find(g=>g.id===x.goalId)||{}).deleted).map(x=>x.amount));
+ const inc=incomeInfo(p,m),est=inc.v-paid-contrib,ov=(db.balOverride[p]||{})[m];
+ const overridden=ov!=null&&ov!=='';const bal=overridden?num(ov):est;
+ return{total,paid,unpaid:total-paid,contrib,income:inc.v,incFrom:inc.from,est,bal,overridden,after:bal-(total-paid)};
+}
+function monthTotals(m,owner){
+ let total=0,paid=0,n=0,np=0;
+ listC(m).forEach(c=>{if(owner!=='all'&&c.owner!==owner)return;const st=statusOf(c,m);if(st==='skip')return;const a=amtOf(c,m);total+=a;n++;if(st==='paid'){paid+=a;np++}});
+ return{total,paid,unpaid:total-paid,n,np};
+}
+const goalSaved=g=>sum(db.contribs.filter(x=>x.goalId===g.id).map(x=>x.amount));
+const canGoal=g=>g.owner===ME()||g.owner==='shared';
+
+/* ================= Tasks logic ================= */
+const canDelTask=t=>t.owner===ME()||t.owner==='shared'||t.createdBy===ME();
+const isOver=t=>t.status!=='done'&&t.due&&t.due<TK;
+function stepDate(k,rep){const d=pk(k);if(rep==='daily')d.setDate(d.getDate()+1);else if(rep==='weekly')d.setDate(d.getDate()+7);else if(rep==='monthly'){const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+1);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last))}return dk(d)}
+function nextDue(t){let n=stepDate(t.due||TK,t.repeat),g=0;while(n<=TK&&g++<800)n=stepDate(n,t.repeat);return n}
+function completeTask(t){
+ t.status='done';t.doneAt=Date.now();t.doneBy=ME();t.updatedAt=Date.now();
+ let msg='Task siap ✓';
+ if(t.repeat&&t.repeat!=='none'){
+  if(!t.seriesId)t.seriesId=t.id;
+  const due=nextDue(t),owner=t.rotate&&t.owner!=='shared'?(t.owner==='pa'?'pb':'pa'):t.owner;
+  const exists=db.tasks.some(x=>x.seriesId===t.seriesId&&x.due===due&&x.id!==t.id);
+  if(!exists){db.tasks.push(Object.assign({},t,{id:uid(),due,owner,status:'todo',doneAt:0,doneBy:'',createdAt:Date.now(),updatedAt:Date.now()}));
+   msg=`Siap ✓ Next: ${relL(due)}${t.rotate&&owner!==t.owner?', giliran '+OWN[owner].n:''}`}
+ }
+ log(`completed ${q(t.title)}`,`completed ${q(t.title)}`,t.owner===ME()?[]:[PARTNER()],'task',t.id);
+ return msg;
+}
+function taskMatches(t){
+ if(state.tOwner!=='all'&&t.owner!==state.tOwner)return false;
+ if(state.tDate==='today'&&t.due!==TK)return false;
+ if(state.tDate==='overdue'&&!isOver(t))return false;
+ if(state.tDate==='week'&&!(t.due&&t.due>=TK&&t.due<=T(6)))return false;
+ return true;
+}
+const tSort=(a,b)=>(a.due||'9999').localeCompare(b.due||'9999')||(a.time||'99').localeCompare(b.time||'99')||a.pri-b.pri;
+
+/* ================= Household logic ================= */
+const cats=area=>db.categories.filter(c=>c.area===area);
+const catName=id=>(db.categories.find(c=>c.id===id)||{}).name||'Lain-lain';
+const stockSt=i=>num(i.qty)<=0?'out':num(i.qty)<=num(i.min)?'low':'ok';
+const ST_L={ok:'In stock',low:'Running low',out:'Out'};
+const invByName=n=>db.inventory.find(i=>i.name.trim().toLowerCase()===String(n).trim().toLowerCase());
+function applyBought(s,on){
+ const inv=s.invId&&db.inventory.find(i=>i.id===s.invId);
+ if(on&&!s.stockApplied&&inv){inv.qty=num(inv.qty)+Math.max(1,num(s.qty));inv.updatedAt=Date.now();s.stockApplied=true}
+ if(!on&&s.stockApplied&&inv){inv.qty=Math.max(0,num(inv.qty)-Math.max(1,num(s.qty)));inv.updatedAt=Date.now();s.stockApplied=false}
+ if(!on&&s.stockApplied&&!inv)s.stockApplied=false;
+}
+function addToShop(name,qty,o){
+ const ex=db.shopping.find(s=>!s.bought&&s.name.trim().toLowerCase()===name.trim().toLowerCase());
+ if(ex)return false;
+ const inv=invByName(name);
+ db.shopping.push(Object.assign({id:uid(),name:name.trim(),qty:Math.max(1,num(qty)||1),cat:'',owner:'',invId:inv?inv.id:'',addedBy:ME(),addedAt:Date.now(),bought:false,boughtAt:0,stockApplied:false},o||{}));
+ return true;
+}
+function missingIng(weekStart){
+ const out=[];
+ for(let i=0;i<7;i++){const k=dk(addD(pk(weekStart),i));if(k<TK)continue;const m=db.meals[k];if(!m)continue;
+  m.ing.forEach(g=>{const inv=invByName(g);if((!inv||num(inv.qty)<=0)&&!out.some(o=>o.name.toLowerCase()===g.toLowerCase()))out.push({name:g,meal:m.name})})}
+ return out;
+}
+
+/* ================= Calendar items ================= */
+function calItems(month){
+ const items=[];
+ db.tasks.filter(t=>t.showCal&&t.due&&t.due.slice(0,7)===month).forEach(t=>items.push({date:t.due,time:t.time,title:t.title,owner:t.owner,kind:'task',id:t.id,done:t.status==='done'}));
+ db.tasks.filter(t=>t.showCal&&t.repeat!=='none'&&t.status!=='done'&&t.due).forEach(t=>{
+  let d=t.due,o=t.owner,g=0;
+  while(g++<62){d=stepDate(d,t.repeat);if(t.rotate&&o!=='shared')o=o==='pa'?'pb':'pa';if(d.slice(0,7)>month)break;
+   if(d.slice(0,7)===month&&!db.tasks.some(x=>x.seriesId===t.seriesId&&x.due===d))items.push({date:d,time:t.time,title:t.title,owner:o,kind:'proj',id:t.id})}
+ });
+ if(prefs.calShow.bills)activeC(month).forEach(c=>{if(!c.dueDay)return;const o=occOf(c,month);if(o&&o.status==='skip')return;
+  const last=new Date(+month.slice(0,4),+month.slice(5),0).getDate();items.push({date:`${month}-${pad(Math.min(c.dueDay,last))}`,title:'Bil: '+c.name,owner:c.owner,kind:'bill',done:!!(o&&o.status==='paid')})});
+ if(prefs.calShow.meals)Object.entries(db.meals).forEach(([k,m])=>{if(k.slice(0,7)===month&&m.name)items.push({date:k,title:'Dinner: '+m.name,owner:'shared',kind:'meal'})});
+ return items.sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'99').localeCompare(b.time||'99'));
+}
+/* ================= Shell ================= */
+const NAV=[['home','Home','home'],['tasks','Tasks','tasks'],['finance','Finance','wallet'],['household','Household','box'],['records','Records','folder']];
+const mq=matchMedia('(prefers-color-scheme: dark)');
+const isDark=()=>prefs.theme==='dark'||(prefs.theme==='auto'&&mq.matches);
+function applyTheme(t,pal){if(t)prefs.theme=t;if(pal)prefs.pal=pal;savePrefs();const r=document.documentElement;r.setAttribute('data-theme',isDark()?'dark':'light');if(prefs.pal&&prefs.pal!=='cocoa')r.setAttribute('data-pal',prefs.pal);else r.removeAttribute('data-pal');const bt=$('#bTheme');if(bt)bt.innerHTML=ic('palette',19)}
+const PALS=[['cocoa','Cocoa','#8F6D5D','#F4EDE2','#C58299'],['blue','Biru hospital','#2A6F9E','#EDF3F8','#4FA3C7'],['sage','Sage green','#6A8A5E','#EDF1E8','#A7BF8C']];
+function openTheme(){
+ const cur=prefs.pal||'cocoa';
+ openSheet('theme','Tema & warna',`<div class="sh-b">
+  <div class="field">Mode<div class="seg full">${[['light','Light'],['dark','Dark'],['auto','Ikut phone']].map(([v,l])=>`<button data-a="set-theme" data-v="${v}" aria-pressed="${prefs.theme===v}">${l}</button>`).join('')}</div><span class="hint">Dark: background gelap, kotak cerah. Senang fokus.</span></div>
+  <div class="field">Warna<div class="pal-row">${PALS.map(([v,l,a,b,c])=>`<button class="pal" data-a="set-pal" data-v="${v}" aria-pressed="${cur===v}" aria-label="${l}" title="${l}"><span class="pal-c" style="background:linear-gradient(135deg,${a} 0 50%,${c} 50% 100%)">${cur===v?ic('check',20,2.6):''}</span></button>`).join('')}</div></div>
+  <p class="tiny faint" style="margin:0">Setting ni untuk phone ni je.</p>
+ </div>`);
+}
+function nameForm(first){
+ const me=ME(),lab=p=>IS_GAS?(p===me?'Nama kau':'Nama partner'):(p==='pa'?'Orang 1':'Orang 2');
+ const blk=p=>{const col=(db.colors||{})[p]||DEF_COL[p];return `<div class="stack" style="gap:8px"><label class="field" id="fN_${p}">${lab(p)}<input name="name_${p}" value="${esc((db.names||{})[p]||'')}" maxlength="20" placeholder="Contoh: ${p==='pa'?'Sayang':'Abang'}" autocomplete="off"><span class="msg" hidden>Isi nama.</span></label>
+  <input type="hidden" name="color_${p}" value="${col}"><div class="cpick" role="group" aria-label="Warna ${lab(p)}">${PCOL.map(c=>`<button type="button" data-a="pick-col" data-p="${p}" data-v="${c}" style="background:${c}" aria-label="Warna ${c}" aria-pressed="${c===col}">${c===col?ic('check',16,2.6):''}</button>`).join('')}</div></div>`};
+ const order=IS_GAS&&me==='pb'?['pb','pa']:['pa','pb'];
+ return `<form class="stack" data-f="names" novalidate style="text-align:left;gap:18px">${order.map(blk).join('')}
+  <p class="tiny faint" style="margin:0">Nama & warna ni nampak kat semua tempat dalam app. Boleh tukar dalam Settings.</p>
+  <button class="btn pri block">${first?'Mula guna':'Save'}</button></form>`;
+}
+function showOnboard(){
+ $('#app').hidden=true;$('#login').hidden=false;applyNames();
+ $('#login').innerHTML=`<div class="login-box">${mark(64)}<h1 class="disp" style="font-size:32px">Selamat datang</h1><p class="muted" style="margin:0 0 18px">Ruang berdua untuk task, duit & rumah. Isi nama korang dulu.</p>${nameForm(true)}</div>`;
+}
+function showLogin(){
+ if(needsNames()){showOnboard();return}
+ applyNames();$('#app').hidden=true;$('#login').hidden=false;
+ $('#login').innerHTML=`<div class="login-box">${mark(76)}<h1 class="disp">Our Space</h1><p class="muted" style="margin:0 0 18px">Rumah kita, tersusun.</p>
+ ${['pa','pb'].map(p=>`<button class="who-btn" data-a="login" data-u="${p}">${av(p)}<span>Masuk sebagai ${esc(OWN[p].n)}<small>Demo</small></span></button>`).join('')}
+ <p class="small faint" style="margin-top:16px">Demo: data simpan dalam browser ni je. Versi penuh guna Google login & sync berdua.</p></div>`;
+}
+function showApp(){
+ applyNames();if(needsNames()){showOnboard();return}
+ $('#login').hidden=true;$('#app').hidden=false;
+ $('#brand').innerHTML=mark(24)+'<span class="disp">Our Space</span>';
+ $('#bGuide').innerHTML=ic('book',19);$('#bMe').innerHTML=av(ME());if(IS_GAS)setSync(pending.length?'saving':'ok');
+ render();
+}
+function render(){
+ state.dirty=false;applyNames();
+ $('#nav').innerHTML=`<div class="brand side">${mark(24)}<span class="disp">Our Space</span></div>`+NAV.map(([v,l,i])=>`<button data-nav="${v}" ${state.view===v?'aria-current="page"':''}>${ic(i)}<span>${l}</span></button>`).join('');
+ const n=unread();$('#bBell').innerHTML=ic('bell',19)+(n?`<span class="badge">${n}</span>`:'');
+ $('#main').innerHTML=({home:vHome,tasks:vTasks,finance:vFinance,household:vHouse,records:vRecords})[state.view]();
+}
+function go(v){state.view=v;render();window.scrollTo({top:0})}
+
+/* ================= Home ================= */
+function vHome(){
+ const me=ME(),h=new Date().getHours();
+ const greet=h<12?'Selamat pagi':h<15?'Selamat tengah hari':h<19?'Selamat petang':'Selamat malam';
+ const need=db.tasks.filter(t=>t.status!=='done'&&(t.owner===me||t.owner==='shared')&&t.due&&t.due<=TK).sort(tSort);
+ const next=calItems(CUR).concat(calItems(shiftM(CUR,1))).find(i=>i.date>=TK&&!i.done&&(i.date>TK||!i.time||i.time>=`${pad(new Date().getHours())}:${pad(new Date().getMinutes())}`));
+ const low=db.inventory.filter(i=>stockSt(i)!=='ok'),open=db.shopping.filter(s=>!s.bought);
+ const goal=db.goals.filter(g=>!g.archived).map(g=>({g,s:goalSaved(g)})).sort((a,b)=>b.s/b.g.target-a.s/a.g.target)[0];
+ const m=p=>{const x=finSum(p,CUR);return `<button class="mcard fcard" style="--c:${OWN[p].c}" data-a="go" data-v="finance"><span class="row small" style="gap:6px;font-weight:600">${dot(p)}${OWN[p].n}</span><span class="tiny muted" style="margin-top:6px">Lepas commitment & simpanan</span><span class="amt">${fmt0(x.after)}</span><span style="border-top:1px solid var(--line);margin:8px 0 4px"></span><span class="rowx"><span>Belum bayar</span><b>${fmt0(x.unpaid)}</b></span><span class="rowx"><span>Simpanan</span><b>${fmt0(x.contrib)}</b></span></button>`};
+ return `${prefs.guideSeen?'':`<section class="card banner" style="margin-top:6px"><span class="ti">${ic('book',20)}</span><p class="grow" style="margin:0;font-size:14px"><b>Baru guna Our Space?</b> Baca cara guna, 2 minit je.</p><div class="row"><button class="btn sm pri" data-a="guide">Baca</button><button class="btn sm" data-a="guide-ok">Dah faham</button></div></section>`}
+ <section class="hello"><p class="date">${greet}, ${DAY[today.getDay()]} ${today.getDate()} ${MON[today.getMonth()]}</p>
+  <h1 class="disp">Hi, ${OWN[me].n}</h1></section>
+ <section class="card" style="padding:4px 16px">
+  <button class="rb trow" data-a="go" data-v="tasks"><span class="ti">${ic('tasks',20)}</span><span class="grow"><span class="title">Tasks</span><span class="meta">${need.length?`${need.length} perlu perhatian hari ni`:'Takde yang urgent. Nice.'}</span></span>${ic('right',18)}</button>
+  ${need.slice(0,3).map(t=>`<div class="trow" style="padding:6px 0 6px 52px;border-top:0"><button class="ck" role="checkbox" aria-checked="false" aria-label="Siapkan ${esc(t.title)}" data-a="t-done" data-id="${t.id}"></button><button class="rb" data-a="t-edit" data-id="${t.id}"><span class="grow"><span class="title" style="font-weight:500">${esc(t.title)}</span></span>${isOver(t)?'<span class="pill red">Lewat</span>':''}${dot(t.owner)}</button></div>`).join('')}
+  <button class="rb trow" data-a="go-cal"><span class="ti" style="color:var(--cocoa)">${ic('cal',20)}</span><span class="grow"><span class="title">Akan datang</span><span class="meta">${next?`${esc(next.title)}, ${relL(next.date)}${next.time?' '+t12(next.time):''}`:'Calendar kosong minggu ni'}</span></span>${ic('right',18)}</button>
+ </section>
+ ${(()=>{const fs=db.files.filter(f=>canSeeFile(f)&&((f.tags.includes(me)&&f.owner!==me&&f.addedAt>(db.seen[me]||0)-7*864e5)||(f.expiry&&dfrom(f.expiry)>=0&&dfrom(f.expiry)<=30)));return fs.length?`<section class="card" style="padding:4px 16px;margin-top:10px"><button class="rb trow" data-a="go-files"><span class="ti">${ic('folder',20)}</span><span class="grow"><span class="title">Records</span><span class="meta">${esc(fs.slice(0,2).map(f=>f.name).join(', '))}${fs.length>2?` +${fs.length-2}`:''}: untuk kau / nak expire</span></span>${ic('right',18)}</button></section>`:''})()}
+ <div class="sec-h"><span>Duit bulan ni</span></div>
+ <div class="money">${m('pa')}${m('pb')}</div>
+ <div class="sec-h"><span>Household</span><span class="small muted">${low.length} item low</span></div>
+ <section class="card" style="padding:4px 16px"><button class="rb trow" data-a="go-h" data-v="shop"><span class="ti">${ic('basket',20)}</span><span class="grow"><span class="title">Shopping list</span><span class="meta">${open.length?esc(open.slice(0,4).map(s=>s.name).join(', '))+(open.length>4?` +${open.length-4}`:''):'Kosong'}</span></span>${ic('right',18)}</button></section>
+ ${goal?`<div class="sec-h"><span>Saving goal</span></div><section class="card"><div class="row between"><span class="title">${esc(goal.g.name)}</span><span class="small muted num">${fmt0(goal.s)} / ${fmt0(goal.g.target)}</span></div><div class="bar" style="margin-top:8px"><i style="width:${Math.min(100,goal.s/goal.g.target*100)}%"></i></div></section>`:''}`;
+}
+
+/* ================= Tasks ================= */
+function vTasks(){
+ const head=`<div class="ph"><h1 class="disp">Tasks</h1><p>Kerja rumah, appointment & chores berdua.</p></div>
+ <div class="seg full" role="group" aria-label="Paparan"><button data-a="tview" data-v="list" aria-pressed="${state.tView==='list'}">${ic('list',16)}List</button><button data-a="tview" data-v="cal" aria-pressed="${state.tView==='cal'}">${ic('cal',16)}Calendar</button></div>
+ <button class="add-btn" data-a="t-new"${state.tView==='cal'?` data-due="${state.calDay}"`:''}>${ic('plus',20,2.2)}Tambah task</button>`;
+ return head+(state.tView==='cal'?vCal():vTaskList());
+}
+function ownerChips(cur,act){return `<div class="chips" role="group" aria-label="Owner">${[['all','Semua'],['pa',OWN.pa.n],['pb',OWN.pb.n],['shared','Shared']].map(([v,l])=>`<button class="chip" data-a="${act}" data-v="${v}" aria-pressed="${cur===v}">${v!=='all'?dot(v):''}${l}</button>`).join('')}</div>`}
+function taskRow(t){
+ const done=t.status==='done';
+ const due=t.due?`<span class="${isOver(t)?'pill red':''}">${isOver(t)?'Lewat, '+dayL(t.due):relL(t.due)}${t.time?' '+t12(t.time):''}</span>`:'';
+ return `<li class="${done?'done':''}"><button class="ck" role="checkbox" aria-checked="${done}" aria-label="${done?'Buka semula':'Siapkan'} ${esc(t.title)}" data-a="t-done" data-id="${t.id}">${done?ic('check',15,2.6):''}</button>
+ <button class="rb" data-a="t-edit" data-id="${t.id}"><span class="grow"><span class="title">${esc(t.title)}</span><span class="meta">${whoTag(t.owner)}${due}${t.status==='doing'?'<span class="pill">In progress</span>':''}${t.pri===1&&!done?'<span class="pill red">High</span>':''}${t.repeat!=='none'?`<span class="who">${ic('repeat',13)}${t.rotate?'Bergilir':REP[t.repeat]}</span>`:''}${t.showCal?`<span class="who" title="Dalam calendar">${ic('cal',13)}</span>`:''}</span></span></button></li>`;
+}
+function vTaskList(){
+ const all=db.tasks.filter(taskMatches);
+ let act=all.filter(t=>t.status!=='done'),done=all.filter(t=>t.status==='done').sort((a,b)=>b.doneAt-a.doneAt);
+ const showActive=state.tStatus!=='done',showDone=true;
+ if(state.tStatus==='active')done=done.filter(t=>t.doneAt>=today.getTime());
+ const grp=[['Lewat',act.filter(isOver),'red'],['Hari ni',act.filter(t=>t.due===TK),''],['Akan datang',act.filter(t=>t.due&&t.due>TK),''],['Takde tarikh',act.filter(t=>!t.due),'']];
+ const filters=`${ownerChips(state.tOwner,'t-owner')}
+ <div class="two" style="margin:8px 0 2px"><label class="field"><span class="tiny">Status</span><select data-c="t-status"><option value="active" ${state.tStatus==='active'?'selected':''}>Belum siap</option><option value="done" ${state.tStatus==='done'?'selected':''}>Dah siap</option><option value="all" ${state.tStatus==='all'?'selected':''}>Semua</option></select></label>
+ <label class="field"><span class="tiny">Tarikh</span><select data-c="t-date"><option value="all">Semua tarikh</option><option value="today" ${state.tDate==='today'?'selected':''}>Hari ni</option><option value="overdue" ${state.tDate==='overdue'?'selected':''}>Lewat</option><option value="week" ${state.tDate==='week'?'selected':''}>7 hari ni</option></select></label></div>`;
+ let body='';
+ if(showActive)grp.forEach(([l,arr,cls])=>{if(arr.length)body+=`<div class="group-h ${cls}"><span>${l}</span><span>${arr.length}</span></div><section class="card" style="padding:2px 16px"><ul class="list">${arr.sort(tSort).map(taskRow).join('')}</ul></section>`});
+ if(showDone&&done.length)body+=`<div class="group-h"><span>${state.tStatus==='active'?'Siap hari ni':'Dah siap'}</span><span>${done.length}</span></div><section class="card" style="padding:2px 16px"><ul class="list">${done.slice(0,50).map(taskRow).join('')}</ul></section>`;
+ if(!body)body=`<div class="empty card"><p>${state.tStatus==='done'?'Belum ada task siap.':'Takde task untuk filter ni.'}</p></div>`;
+ return filters+body;
+}
+function vCal(){
+ const m=state.calMonth,first=pk(m+'-01'),start=monday(first),items=calItems(m);
+ const byDay={};items.forEach(i=>(byDay[i.date]=byDay[i.date]||[]).push(i));
+ let grid=DAYS.map(d=>`<div class="mh">${d}</div>`).join('');
+ for(let i=0;i<42;i++){const d=addD(start,i),k=dk(d),its=byDay[k]||[],out=k.slice(0,7)!==m;
+  if(i>=35&&out&&d.getDay()===1)break;
+  grid+=`<button class="md ${out?'out':''} ${k===TK?'today':''}" data-a="cal-day" data-k="${k}" aria-pressed="${state.calDay===k}" aria-label="${dayL(k)}, ${its.length} item"><span class="n">${d.getDate()}</span><span class="dots">${its.slice(0,4).map(x=>dot(x.owner)).join('')}</span></button>`}
+ const sel=byDay[state.calDay]||[];
+ return `<div class="cal-nav"><button class="ib" data-a="cal-m" data-d="-1" aria-label="Bulan sebelum">${ic('left',18)}</button><b class="disp" style="font-size:18px">${monL(m)}</b><button class="ib" data-a="cal-m" data-d="1" aria-label="Bulan depan">${ic('right',18)}</button></div>
+ <div class="chips" style="margin-bottom:8px"><button class="chip" data-a="cal-today">Hari ni</button><button class="chip" data-a="cal-show" data-v="bills" aria-pressed="${prefs.calShow.bills}">Bil</button><button class="chip" data-a="cal-show" data-v="meals" aria-pressed="${prefs.calShow.meals}">Meal plan</button></div>
+ <section class="card" style="padding:10px"><div class="mgrid">${grid}</div></section>
+ <div class="sec-h"><span>${relL(state.calDay)}${dfrom(state.calDay)>=2||dfrom(state.calDay)<-1?'':', '+dayL(state.calDay)}</span>${sel.length?waBtn(PARTNER(),`📅 ${DAY[pk(state.calDay).getDay()]}, ${dayL(state.calDay)}\n${sel.map(i=>`• ${i.time?t12(i.time)+' ':''}${i.title}`).join('\n')}\n\n– Our Space`,'Share'):''}</div>
+ <section class="card" style="padding:4px 16px">${sel.length?sel.map(i=>`<div class="ev ${i.kind==='proj'?'ghost':''}" style="--c:${OWN[i.owner].c}"><span class="bar-v"></span>${i.kind==='task'||i.kind==='proj'?`<button class="rb" data-a="t-edit" data-id="${i.id}">`:'<span class="grow">'}<span class="grow"><span class="title ${i.done?'faint':''}" style="${i.done?'text-decoration:line-through':''}">${esc(i.title)}</span><span class="meta">${i.time?t12(i.time):'Sepanjang hari'}${i.kind==='proj'?', ulangan':''}${i.kind==='bill'&&i.done?', dah bayar':''}</span></span>${i.kind==='task'||i.kind==='proj'?'</button>':'</span>'}${whoTag(i.owner)}</div>`).join(''):`<div class="empty"><p>Takde apa-apa hari ni.</p></div>`}</section>
+ <p class="tiny faint" style="margin:10px 2px">Task masuk calendar bila kau on “Show in calendar”. Bil & meal plan boleh on/off kat atas.</p>`;
+}
+function openTask(id,preset){
+ const me=ME(),t=id?db.tasks.find(x=>x.id===id):Object.assign({title:'',notes:'',owner:me,due:'',time:'',pri:2,status:'todo',repeat:'none',rotate:false,showCal:false},preset||{});
+ if(!t)return;
+ const segO=['pa','pb','shared'].map(o=>`<button type="button" data-a="f-seg" data-n="owner" data-v="${o}" aria-pressed="${t.owner===o}">${dot(o)}${OWN[o].n}</button>`).join('');
+ const segP=[[3,'Low'],[2,'Medium'],[1,'High']].map(([v,l])=>`<button type="button" data-a="f-seg" data-n="pri" data-v="${v}" aria-pressed="${t.pri==v}">${l}</button>`).join('');
+ const segS=Object.entries(ST).map(([v,l])=>`<button type="button" data-a="f-seg" data-n="status" data-v="${v}" aria-pressed="${t.status===v}">${l}</button>`).join('');
+ const partner=PARTNER(),nudge=id&&(t.owner===partner||t.owner==='shared')&&t.status!=='done'?waBtn(partner,`Hi ${OWN[partner].n} 👋\nJangan lupa: ${t.title}${t.due?` (${relL(t.due).toLowerCase()}${t.time?' '+t12(t.time):''})`:''}\n\n– Our Space`,'Nudge '+OWN[partner].n):'';
+ openSheet('task',id?'Edit task':'Task baru',`<form class="sh-b" data-f="task" novalidate><input type="hidden" name="id" value="${id||''}">
+  <input type="hidden" name="owner" value="${t.owner}"><input type="hidden" name="pri" value="${t.pri}"><input type="hidden" name="status" value="${t.status}">
+  <label class="field" id="fTitle">Task<input name="title" value="${esc(t.title)}" maxlength="120" placeholder="Contoh: Bayar bil air" autocomplete="off"><span class="msg" hidden>Isi nama task.</span></label>
+  <div class="field">Untuk siapa<div class="seg full">${segO}</div></div>
+  <div class="two"><label class="field">Tarikh<input type="date" name="due" value="${t.due||''}"></label><label class="field" id="fTime">Masa (optional)<input type="time" name="time" value="${t.time||''}"><span class="msg" hidden>Pilih tarikh dulu.</span></label></div>
+  <div class="field">Priority<div class="seg full">${segP}</div></div>
+  ${id?`<div class="field">Status<div class="seg full">${segS}</div></div>`:''}
+  <label class="field">Ulang<select name="repeat" data-c="f-repeat">${Object.entries(REP).map(([v,l])=>`<option value="${v}" ${t.repeat===v?'selected':''}>${l}</option>`).join('')}</select></label>
+  <label class="checkline" id="fRotate" ${t.repeat==='none'?'hidden':''}><input type="checkbox" name="rotate" ${t.rotate?'checked':''}> Bergilir ${OWN.pa.n} ↔ ${OWN.pb.n} lepas siap</label>
+  <label class="checkline"><input type="checkbox" name="showCal" ${t.showCal?'checked':''}> Show in calendar</label>
+  <label class="field">Nota (optional)<textarea name="notes" maxlength="500">${esc(t.notes)}</textarea></label>
+  ${id?`<p class="tiny faint" style="margin:0">By ${OWN[t.createdBy]?OWN[t.createdBy].n:'?'}, ${ago(t.createdAt).toLowerCase()}${t.updatedAt>t.createdAt?`. Updated ${ago(t.updatedAt).toLowerCase()}`:''}</p>`:''}
+  ${nudge?`<div>${nudge}</div>`:''}
+  <div class="sh-a">${id&&canDelTask(t)?`<button type="button" class="btn danger" data-a="t-del" data-id="${id}">Delete</button>`:'<span></span>'}<button class="btn pri" type="submit">${id?'Save':'Tambah task'}</button></div>
+ </form>`);
+}
+/* ================= Household ================= */
+function vHouse(){
+ const tabs=[['inv','Inventory'],['shop','Shopping'],['meals','Meal plan']];
+ return `<div class="ph"><div><h1 class="disp">Household</h1><p>Stok rumah, shopping list & menu minggu ni.</p></div></div>
+ <div class="seg full" role="group" aria-label="Bahagian" style="margin-bottom:12px">${tabs.map(([v,l])=>`<button data-a="h-tab" data-v="${v}" aria-pressed="${state.hTab===v}">${l}</button>`).join('')}</div>
+ ${state.hTab==='inv'?vInv():state.hTab==='shop'?vShop():vMeals()}`;
+}
+function catChips(area,cur,act){
+ return `<div class="chips" role="group" aria-label="Kategori"><button class="chip" data-a="${act}" data-v="all" aria-pressed="${cur==='all'}">Semua</button>${cats(area).map(c=>`<button class="chip" data-a="${act}" data-v="${c.id}" aria-pressed="${cur===c.id}">${esc(c.name)}</button>`).join('')}<button class="chip" data-a="${act}" data-v="" aria-pressed="${cur===''}">Lain-lain</button><button class="chip add" data-a="cat-mgr" data-v="${area}">${ic('tag',15)}Urus kategori</button></div>`;
+}
+function grouped(area,items,cur,rowFn){
+ const groups=cur==='all'?[...cats(area).map(c=>[c.id,c.name]),['','Lain-lain']]:[[cur,catName(cur)]];
+ let html='';
+ groups.forEach(([id,name])=>{const arr=items.filter(i=>(i.cat||'')===id||(id===''&&!db.categories.some(c=>c.id===i.cat)));if(!arr.length)return;
+  html+=`<div class="group-h"><span>${esc(name)}</span><span>${arr.length}</span></div><section class="card" style="padding:2px 16px"><ul class="list">${arr.map(rowFn).join('')}</ul></section>`});
+ return html;
+}
+function vInv(){
+ const low=db.inventory.filter(i=>stockSt(i)==='low').length,out=db.inventory.filter(i=>stockSt(i)==='out').length;
+ const row=i=>{const s=stockSt(i);return `<li><button class="rb" data-a="i-edit" data-id="${i.id}"><span class="grow"><span class="title">${esc(i.name)}</span><span class="meta"><span class="pill ${s}">${ST_L[s]}</span><span>Min ${num(i.min)} ${esc(i.unit)}</span></span></span></button>
+ <span class="stp"><button data-a="i-qty" data-id="${i.id}" data-d="-1" aria-label="Kurang ${esc(i.name)}">−</button><span class="num">${num(i.qty)}</span><button data-a="i-qty" data-id="${i.id}" data-d="1" aria-label="Tambah ${esc(i.name)}">+</button></span></li>`};
+ const body=grouped('inventory',db.inventory.slice().sort((a,b)=>a.name.localeCompare(b.name)),state.invCat,row);
+ return `${catChips('inventory',state.invCat,'inv-cat')}
+ <button class="add-btn" data-a="i-new">${ic('plus',20,2.2)}Tambah item</button>
+ <div class="row between wrap" style="margin:10px 2px 0;gap:8px"><span class="small muted">${low} running low, ${out} habis</span>${low+out?`<span class="row" style="gap:6px">${waBtn(PARTNER(),`📦 Barang habis / tinggal sikit:\n${db.inventory.filter(i=>stockSt(i)!=='ok').map(i=>`• ${i.name} (${num(i.qty)} ${i.unit})`).join('\n')}\n\n– Our Space`,'Hantar')}<button class="btn sm" data-a="low-to-shop">${ic('basket',16)}Masuk shopping</button></span>`:''}</div>
+ ${body||`<div class="empty card" style="margin-top:10px"><p>Takde item dalam kategori ni.</p></div>`}`;
+}
+function vShop(){
+ const open=db.shopping.filter(s=>!s.bought),bought=db.shopping.filter(s=>s.bought).sort((a,b)=>b.boughtAt-a.boughtAt);
+ const P2=PARTNER();
+ const row=s=>`<li class="${s.bought?'done':''}"><button class="ck" role="checkbox" aria-checked="${s.bought}" aria-label="${s.bought?'Belum beli':'Dah beli'} ${esc(s.name)}" data-a="s-buy" data-id="${s.id}">${s.bought?ic('check',15,2.6):''}</button>
+ <button class="rb" data-a="s-edit" data-id="${s.id}"><span class="grow"><span class="title">${esc(s.name)}${num(s.qty)>1?` <span class="muted" style="font-weight:500">×${num(s.qty)}</span>`:''}</span><span class="meta">${s.owner?whoTag(s.owner):''}<span>By ${OWN[s.addedBy]?OWN[s.addedBy].n:'?'}</span>${s.invId?'<span>Link stok</span>':''}</span></span></button></li>`;
+ const filt=state.shopCat==='all'?open:open.filter(s=>(s.cat||'')===state.shopCat);
+ return `${catChips('shopping',state.shopCat,'shop-cat')}
+ <form class="quick" data-f="shop-quick" style="margin:12px 0 0"><input name="name" placeholder="Nama barang" aria-label="Nama barang" maxlength="80" autocomplete="off"><input class="qty" name="qty" type="number" min="1" value="1" aria-label="Kuantiti"></form>
+ <button class="add-btn" data-a="shop-add">${ic('plus',20,2.2)}Tambah ke list</button>
+ <div class="row between" style="margin:12px 2px 0"><span class="small muted">${open.length} nak beli</span>${open.length?waBtn(P2,`🛒 Shopping list\n${open.map(s=>`• ${s.name}${num(s.qty)>1?' ×'+num(s.qty):''}`).join('\n')}\n\n– Our Space`,'Hantar ke '+OWN[P2].n):''}</div>
+ ${grouped('shopping',filt,state.shopCat,row)||`<div class="empty card" style="margin-top:10px"><p>List kosong. Taip barang kat atas.</p></div>`}
+ ${bought.length?`<div class="group-h"><span>Dah beli</span><button class="link small" data-a="s-clear">Clear dah beli</button></div><section class="card" style="padding:2px 16px"><ul class="list">${bought.slice(0,30).map(row).join('')}</ul></section>`:''}
+ <p class="tiny faint" style="margin:10px 2px">Tick barang yang link dengan stok → stok naik sekali. Untick → stok turun balik.</p>`;
+}
+function vMeals(){
+ const ws=state.mealWeek,miss=missingIng(ws);
+ let rows='';
+ for(let i=0;i<7;i++){const k=dk(addD(pk(ws),i)),m=db.meals[k],past=k<TK;
+  rows+=`<li class="${past?'done':''}"><button class="rb" data-a="m-edit" data-k="${k}"><span class="ti" style="width:44px;height:44px;flex-direction:column;gap:0;font-size:11px;line-height:1.1;${k===TK?'background:var(--cocoa);color:var(--on-cocoa)':''}"><b style="font-size:16px">${pk(k).getDate()}</b>${DAY[pk(k).getDay()].slice(0,3)}</span><span class="grow"><span class="title">${m&&m.name?esc(m.name):'<span class="faint" style="font-weight:500">Belum plan</span>'}</span>${m&&m.ing.length?`<span class="meta">${esc(m.ing.join(', '))}</span>`:''}</span></button></li>`}
+ return `<div class="cal-nav"><button class="ib" data-a="m-week" data-d="-7" aria-label="Minggu lepas">${ic('left',18)}</button><b>${dayL(ws)} – ${dayL(dk(addD(pk(ws),6)))}</b><button class="ib" data-a="m-week" data-d="7" aria-label="Minggu depan">${ic('right',18)}</button></div>
+ <section class="card" style="padding:2px 16px"><ul class="list">${rows}</ul></section>
+ <div class="sec-h"><span>Bahan tak cukup</span><span class="small muted">${miss.length}</span></div>
+ <section class="card">${miss.length?`<ul class="list">${miss.map(x=>`<li style="min-height:40px"><span class="grow">${esc(x.name)}</span><span class="small muted">${esc(x.meal)}</span></li>`).join('')}</ul><button class="add-btn" style="margin-bottom:0" data-a="m-to-shop">${ic('basket',18)}Masuk shopping list</button>`:'<p class="muted" style="margin:0">Semua bahan ada dalam stok. Jom masak.</p>'}</section>`;
+}
+/* sheets */
+function catOpts(area,sel){return `<option value="">Lain-lain</option>`+cats(area).map(c=>`<option value="${c.id}" ${sel===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}
+function openItem(id){
+ const i=id?db.inventory.find(x=>x.id===id):{name:'',cat:state.invCat==='all'?'':state.invCat,qty:1,unit:'pcs',min:1,notes:''};if(!i)return;
+ openSheet('item',id?'Edit item':'Item baru',`<form class="sh-b" data-f="item" novalidate><input type="hidden" name="id" value="${id||''}">
+  <label class="field" id="fName">Nama item<input name="name" value="${esc(i.name)}" maxlength="80" autocomplete="off"><span class="msg" hidden>Isi nama item.</span></label>
+  <label class="field">Kategori<select name="cat">${catOpts('inventory',i.cat)}</select></label>
+  <div class="two"><label class="field" id="fQty">Kuantiti sekarang<input type="number" name="qty" min="0" step="1" value="${num(i.qty)}"><span class="msg" hidden>Nombor 0 ke atas.</span></label><label class="field">Unit<input name="unit" value="${esc(i.unit)}" maxlength="20" placeholder="pcs, pek, botol"></label></div>
+  <label class="field" id="fMin">Minimum stok<input type="number" name="min" min="0" step="1" value="${num(i.min)}"><span class="hint">Sama atau bawah nombor ni = Running low.</span><span class="msg" hidden>Nombor 0 ke atas.</span></label>
+  <label class="field">Nota (optional)<input name="notes" value="${esc(i.notes)}" maxlength="120"></label>
+  <div class="sh-a">${id?`<button type="button" class="btn danger" data-a="i-del" data-id="${id}">Delete</button>`:'<span></span>'}<button class="btn pri" type="submit">${id?'Save':'Tambah item'}</button></div></form>`);
+}
+function openShop(id){
+ const s=db.shopping.find(x=>x.id===id);if(!s)return;
+ openSheet('shop','Edit barang',`<form class="sh-b" data-f="shop" novalidate><input type="hidden" name="id" value="${id}">
+  <label class="field" id="fName">Barang<input name="name" value="${esc(s.name)}" maxlength="80"><span class="msg" hidden>Isi nama barang.</span></label>
+  <div class="two"><label class="field">Kuantiti<input type="number" name="qty" min="1" value="${Math.max(1,num(s.qty))}"></label><label class="field">Kategori<select name="cat">${catOpts('shopping',s.cat)}</select></label></div>
+  <label class="field">Siapa beli (optional)<select name="owner"><option value="">Sesiapa</option>${['pa','pb'].map(o=>`<option value="${o}" ${s.owner===o?'selected':''}>${OWN[o].n}</option>`).join('')}</select></label>
+  <label class="field">Link dengan stok<select name="invId"><option value="">Tak link</option>${db.inventory.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(i=>`<option value="${i.id}" ${s.invId===i.id?'selected':''}>${esc(i.name)}</option>`).join('')}</select><span class="hint">Bila tick “dah beli”, stok item ni naik ikut kuantiti.</span></label>
+  <p class="tiny faint" style="margin:0">By ${OWN[s.addedBy]?OWN[s.addedBy].n:'?'}, ${ago(s.addedAt).toLowerCase()}</p>
+  <div class="sh-a"><button type="button" class="btn danger" data-a="s-del" data-id="${id}">Delete</button><button class="btn pri" type="submit">Save</button></div></form>`);
+}
+const catList=area=>area==='inventory'?db.inventory:area==='shopping'?db.shopping:area==='folder'?db.files:db.commitments;
+const catFld=area=>area==='pay'?'pay':area==='folder'?'folder':'cat';
+function openCats(area){
+ const list=cats(area),count=id=>catList(area).filter(x=>x[catFld(area)]===id).length;
+ openSheet('cats',area==='pay'?'Cara bayar':area==='folder'?'Folder':`Kategori ${area==='inventory'?'Inventory':'Shopping'}`,`<div class="sh-b">
+  <p class="small muted" style="margin:0">${area==='pay'?'Senarai bank, e-wallet atau kad korang. Tukar nama terus dalam kotak. Delete → commitment jadi “Tak set”.':area==='folder'?'Tukar nama terus dalam kotak. Delete folder → file pindah ke “Lain-lain”, tak hilang.':'Tukar nama terus dalam kotak. Delete kategori → item pindah ke “Lain-lain”.'}</p>
+  <ul class="list">${list.map(c=>`<li><input value="${esc(c.name)}" maxlength="40" data-c="cat-rename" data-id="${c.id}" aria-label="Nama kategori"><span class="small muted" style="white-space:nowrap">${count(c.id)} ${area==='pay'?'bil':area==='folder'?'file':'item'}</span><button class="ib" data-a="cat-del" data-id="${c.id}" aria-label="Delete ${esc(c.name)}">${ic('close',16)}</button></li>`).join('')||'<li class="muted">Belum ada kategori.</li>'}</ul>
+  <form class="quick" data-f="cat-add"><input type="hidden" name="area" value="${area}"><input name="name" placeholder="${area==='pay'?'Contoh: Maybank':area==='folder'?'Nama folder baru':'Nama kategori baru'}" maxlength="40" aria-label="Nama baru"><button class="btn pri">${ic('plus',18,2.2)}Tambah</button></form>
+  <button class="btn" data-a="close">Siap</button></div>`);
+}
+function openMeal(k){
+ const m=db.meals[k]||{name:'',ing:[]};
+ openSheet('meal',`Dinner ${DAY[pk(k).getDay()]}, ${dayL(k)}`,`<form class="sh-b" data-f="meal"><input type="hidden" name="k" value="${k}">
+  <label class="field">Menu<input name="name" value="${esc(m.name)}" maxlength="80" placeholder="Contoh: Ayam masak kicap"></label>
+  <label class="field">Bahan (pisah dengan koma)<textarea name="ing" placeholder="Ayam, Bawang, Kicap">${esc(m.ing.join(', '))}</textarea><span class="hint">Guna nama sama macam Inventory supaya app boleh check stok.</span></label>
+  <div class="sh-a">${db.meals[k]?`<button type="button" class="btn danger" data-a="m-clear" data-k="${k}">Clear</button>`:'<span></span>'}<button class="btn pri" type="submit">Save</button></div></form>`);
+}
+
+/* ================= Finance & Records (Stage 2 / 3) ================= */
+/* ================= Finance ================= */
+const fmt2=n=>(num(n)<0?'−':'')+'RM'+Math.abs(num(n)).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2});
+function vFinance(){
+ const m=state.finMonth;
+ return `<div class="ph"><h1 class="disp">Finance</h1><p>Commitment bulanan & saving goals.</p></div>
+ <div class="cal-nav" style="margin-top:0"><button class="ib" data-a="fm" data-d="-1" aria-label="Bulan sebelum">${ic('left',18)}</button><b class="disp" style="font-size:20px">${monL(m)}</b><button class="ib" data-a="fm" data-d="1" aria-label="Bulan depan">${ic('right',18)}</button></div>
+ ${m!==CUR?`<div class="card row between" style="padding:10px 14px;margin-bottom:10px;background:var(--card-2)"><span class="small">${m<CUR?'Rekod bulan lepas. Status bayar kekal macam asal.':'Bulan depan. Semua commitment mula Unpaid.'}</span><button class="link" data-a="fm-now">Bulan ni</button></div>`:''}
+ <div class="seg full" role="group" aria-label="Bahagian" style="margin-bottom:4px">${[['sum','Ringkasan'],['inc','Gaji'],['com','Commitment'],['goal','Goals']].map(([v,l])=>`<button data-a="ftab" data-v="${v}" aria-pressed="${state.finTab===v}">${l}</button>`).join('')}</div>
+ ${state.finTab==='sum'?fSum(m):state.finTab==='inc'?fInc(m):state.finTab==='com'?fCom(m):fGoals()}`;
+}
+function fSum(m){
+ const a=finSum('pa',m),b=finSum('pb',m),t=monthTotals(m,'all'),pct=t.total?t.paid/t.total*100:0;
+ const card=(p,x)=>{const incOk=x.incFrom===m;return `<button class="mcard fcard" style="--c:${OWN[p].c}" data-a="bal" data-p="${p}">
+  <span class="row between small" style="font-weight:600"><span class="row" style="gap:6px">${dot(p)}${OWN[p].n}</span></span>
+  <span class="tagline"><span class="pill ${incOk?'ok':'low'}">${incOk?'Gaji '+MON[+m.slice(5)-1]+' ✓':x.incFrom?'Gaji guna '+MON[+x.incFrom.slice(5)-1]:'Gaji belum isi'}</span></span>
+  <span class="tiny muted" style="margin-top:4px">Lepas commitment & simpanan</span><span class="amt">${fmt0(x.after)}</span>
+  <span style="border-top:1px solid var(--line);margin:8px 0 4px"></span>
+  ${x.overridden?`<span class="rowx"><span>Baki sebenar</span><b>${fmt0(x.bal)}</b></span><span class="rowx"><span>− Belum bayar</span><b>${fmt0(x.unpaid)}</b></span><span class="rowx"><span>&nbsp;</span><b>&nbsp;</b></span>`
+  :`<span class="rowx"><span>Gaji bersih</span><b>${fmt0(x.income)}</b></span><span class="rowx"><span>− Commitment</span><b>${fmt0(x.total)}</b></span><span class="rowx"><span>− Simpanan</span><b>${fmt0(x.contrib)}</b></span>`}
+ </button>`};
+ const goals=db.goals.filter(g=>!g.archived).slice(0,2);
+ return `<div class="money" style="margin-top:12px">${card('pa',a)}${card('pb',b)}</div>
+ <div class="card row between" style="margin-top:10px;padding:12px 16px"><span class="small muted">Gabungan lepas commitment</span><b class="num">${fmt0(a.after+b.after)}</b></div>
+ <div class="sec-h"><span>Commitment ${MON[+m.slice(5)-1]}</span><span class="small muted">${t.np}/${t.n} dah bayar</span></div>
+ <section class="card"><div class="stack" style="gap:6px">
+  <div class="row between"><span class="muted">Total</span><b class="num">${fmt2(t.total)}</b></div>
+  <div class="row between"><span class="muted">Dah bayar</span><b class="num" style="color:var(--ok)">${fmt2(t.paid)}</b></div>
+  <div class="row between"><span class="muted">Belum bayar</span><b class="num" style="color:${t.unpaid>0?'var(--danger)':'var(--ink)'}">${fmt2(t.unpaid)}</b></div>
+  <div class="bar" style="margin-top:6px"><i style="width:${pct}%"></i></div><span class="tiny muted">${Math.round(pct)}% dah bayar</span></div>
+  <button class="btn block" style="margin-top:12px" data-a="ftab" data-v="com">Tengok commitment</button></section>
+ ${goals.length?`<div class="sec-h"><span>Saving goals</span><button class="link" data-a="ftab" data-v="goal">Semua</button></div>${goals.map(goalCard).join('')}`:''}
+ <p class="tiny faint" style="margin:14px 2px">Angka besar = gaji bersih − semua commitment bulan ni (dah & belum bayar) − simpanan masuk tabung bulan ni. Shared dikira 50/50. Ni anggaran, bukan baki bank. Tap kad untuk breakdown atau set baki sebenar.</p>`;
+}
+function fInc(m){
+ const box=p=>{const own=p===ME(),ls=linesOf(p,m),inc=incomeInfo(p,m),ins=ls.filter(l=>l.type!=='out'),outs=ls.filter(l=>l.type==='out');
+  const row=l=>`<li><button class="rb" ${own?`data-a="l-edit" data-p="${p}" data-id="${l.id}"`:'disabled'}><span class="grow"><span class="title" style="font-weight:500">${esc(l.name)}</span></span><b class="num" style="${l.type==='out'?'color:var(--danger)':''}">${l.type==='out'?'−':'+'} ${fmt2(l.amount)}</b></button></li>`;
+  return `<section class="card" style="margin-top:12px;border-top:4px solid ${OWN[p].c}"><div class="row between"><span class="row" style="gap:6px;font-weight:700">${dot(p)}${OWN[p].n}</span><span class="tiny muted">Gaji bersih</span></div>
+  <div class="disp num" style="font-size:30px;font-weight:700;margin:2px 0 6px">${fmt2(inc.v)}</div>
+  ${ls.length?`${ins.length?`<div class="group-h" style="margin-top:6px"><span>Pendapatan</span><span class="num">${fmt2(sum(ins.map(l=>l.amount)))}</span></div><ul class="list">${ins.map(row).join('')}</ul>`:''}${outs.length?`<div class="group-h"><span>Potongan</span><span class="num">${fmt2(sum(outs.map(l=>l.amount)))}</span></div><ul class="list">${outs.map(row).join('')}</ul>`:''}`
+  :`<p class="small" style="margin:4px 0;color:var(--warn);font-weight:600">${inc.from?`${monL(m)} belum isi. Kiraan guna ${monL(inc.from)}.`:'Belum ada gaji.'}</p>`}
+  ${own?`<button class="add-btn" data-a="l-new" data-p="${p}">${ic('plus',20,2.2)}Tambah pendapatan / potongan</button>${!ls.length&&inc.from?`<button class="btn block" data-a="inc-copy" data-p="${p}">Copy dari ${monL(inc.from)}, lepas tu edit</button>`:''}`:`<p class="tiny faint" style="margin:8px 0 0">View only. ${OWN[p].n} je boleh ubah.</p>`}</section>`};
+ const me=ME();return box(me)+box(PARTNER())+`<p class="tiny faint" style="margin:12px 2px">Isi setiap bulan ikut payslip. Gaji pokok, OT, elaun, bonus, KWSP, PCB… nama ikut kau. Bulan tak diisi guna bulan terakhir.</p>`;
+}
+function openLine(p,id){
+ const m=state.finMonth,l=id?linesOf(p,m).find(x=>x.id===id):{name:'',amount:'',type:'in'};if(!l||p!==ME())return;
+ const sugg=['Gaji pokok','OT','Elaun','Bonus','Komisen','Side income','KWSP','PERKESO','EIS','PCB','Potongan lain'];
+ openSheet('line',id?'Edit':'Tambah pendapatan / potongan',`<form class="sh-b" data-f="line" novalidate><input type="hidden" name="p" value="${p}"><input type="hidden" name="id" value="${id||''}"><input type="hidden" name="type" value="${l.type}">
+  <div class="field">Jenis<div class="seg full"><button type="button" data-a="f-seg" data-n="type" data-v="in" aria-pressed="${l.type!=='out'}">+ Pendapatan</button><button type="button" data-a="f-seg" data-n="type" data-v="out" aria-pressed="${l.type==='out'}">− Potongan</button></div></div>
+  <label class="field" id="fLN">Nama<input name="name" value="${esc(l.name)}" maxlength="40" placeholder="Contoh: OT" autocomplete="off"><span class="msg" hidden>Isi nama.</span></label>
+  <div class="chips" style="flex-wrap:wrap">${sugg.map(s=>`<button type="button" class="chip" data-a="l-sugg" data-v="${s}">${s}</button>`).join('')}</div>
+  <label class="field" id="fLA">Jumlah (RM)<input type="number" step="0.01" min="0" inputmode="decimal" name="amount" value="${l.amount}"><span class="msg" hidden>Nombor 0 ke atas.</span></label>
+  <p class="tiny faint" style="margin:0">Untuk ${monL(m)} je. Bulan lain tak berubah.</p>
+  <div class="sh-a">${id?`<button type="button" class="btn danger" data-a="l-del" data-p="${p}" data-id="${id}">Delete</button>`:'<span></span>'}<button class="btn pri">${id?'Save':'Tambah'}</button></div></form>`);
+}
+function dueTag(c,m){
+ const st=statusOf(c,m),d=dueOf(c,m);
+ if(st==='paid'){const o=occOf(c,m);return `<span>Bayar ${o&&o.paidAt?dayL(dk(new Date(o.paidAt))):''}${o&&o.by?' by '+OWN[o.by].n:''}</span>`}
+ if(st==='skip')return '<span>Skip bulan ni</span>';
+ if(m<CUR)return `<span class="pill red">Tak bayar</span>`;
+ if(!d)return '<span>Bila-bila bulan ni</span>';
+ if(m===CUR){const diff=d-today.getDate();if(diff<0)return `<span class="pill red">Lewat ${-diff} hari</span>`;if(diff===0)return '<span class="pill low">Due hari ni</span>';if(diff<=3)return `<span class="pill low">Due ${diff} hari lagi</span>`}
+ return `<span>Due ${d} ${MON[+m.slice(5)-1]}</span>`;
+}
+function comRow(c,m){
+ const st=statusOf(c,m),paid=st==='paid',kids=kidsOf(c,m),can=canFin(c);
+ return `<li class="${paid?'done':''}">${st==='skip'?`<span class="ck" style="opacity:.4" aria-hidden="true"></span>`:`<button class="ck" role="checkbox" aria-checked="${paid}" ${can?'':'disabled'} aria-label="${paid?'Tanda belum bayar':'Tanda dah bayar'} ${esc(c.name)}" data-a="c-pay" data-id="${c.id}">${paid?ic('check',15,2.6):''}</button>`}
+ <button class="rb" data-a="c-edit" data-id="${c.id}"><span class="grow"><span class="title">${esc(c.name)}</span><span class="meta">${whoTag(c.owner)}${dueTag(c,m)}${c.repeat==='once'?'<span>Sekali je</span>':''}${c.pay&&db.categories.find(x=>x.id===c.pay)?`<span>${esc(catName(c.pay))}</span>`:''}${kids.length?`<span>+ ${kids.map(k=>esc(k.name)).join(', ')}</span>`:''}</span></span><b class="num" style="${paid?'color:var(--ink-3)':''}">${fmt2(amtOf(c,m))}</b></button></li>`;
+}
+function fCom(m){
+ const all=listC(m).filter(c=>state.cOwner==='all'||c.owner===state.cOwner);
+ const unpaid=all.filter(c=>statusOf(c,m)==='unpaid').sort((a,b)=>(dueOf(a,m)||99)-(dueOf(b,m)||99)),paid=all.filter(c=>statusOf(c,m)==='paid'),skip=all.filter(c=>statusOf(c,m)==='skip');
+ const t=monthTotals(m,state.cOwner),pct=t.total?t.paid/t.total*100:0;
+ const sec=(l,arr,cls)=>arr.length?`<div class="group-h ${cls||''}"><span>${l}</span><span>${arr.length}</span></div><section class="card" style="padding:2px 16px"><ul class="list">${arr.map(c=>comRow(c,m)).join('')}</ul></section>`:'';
+ return `<button class="add-btn" data-a="c-new">${ic('plus',20,2.2)}Tambah commitment</button>
+ <div style="margin-top:8px">${ownerChips(state.cOwner,'c-owner')}</div><div class="chips" style="margin-top:6px"><button class="chip add" data-a="cat-mgr" data-v="pay">${ic('tag',15)}Urus cara bayar</button></div>
+ ${(()=>{const p=PARTNER(),pu=listC(m).filter(c=>(c.owner===p||c.owner==='shared')&&statusOf(c,m)==='unpaid');return pu.length&&m>=CUR?`<div class="row between" style="margin-top:10px"><span class="small muted">${OWN[p].n} & Shared: ${pu.length} belum bayar</span>${waBtn(p,`Hi ${OWN[p].n} 👋\nBil belum bayar ${monL(m)}:\n${pu.map(c=>`• ${c.name} ${fmt2(amtOf(c,m))}${dueOf(c,m)?` (due ${dueOf(c,m)}hb)`:''}`).join('\n')}\n\n– Our Space`,'Remind')}</div>`:''})()}
+ <section class="card" style="margin-top:10px;padding:12px 16px"><div class="row between small"><span class="muted">Total <b class="num" style="color:var(--ink)">${fmt0(t.total)}</b></span><span class="muted">Paid <b class="num" style="color:var(--ok)">${fmt0(t.paid)}</b></span><span class="muted">Unpaid <b class="num" style="color:${t.unpaid>0?'var(--danger)':'var(--ink)'}">${fmt0(t.unpaid)}</b></span></div><div class="bar" style="margin-top:10px"><i style="width:${pct}%"></i></div></section>
+ ${sec(m<CUR?'Tak bayar':'Belum bayar',unpaid,m<CUR?'red':'')}${sec('Dah bayar',paid)}${sec('Skip bulan ni',skip)}
+ ${!all.length?`<div class="empty card" style="margin-top:10px"><p>Takde commitment untuk ${monL(m)}.</p></div>`:''}
+ <p class="tiny faint" style="margin:12px 2px">Tick bila dah bayar. Bulan baru, commitment berulang mula Unpaid. Rekod bulan lepas kekal.</p>`;
+}
+function goalCard(g){
+ const s=goalSaved(g),pct=g.target?Math.min(100,s/g.target*100):0;
+ let per='';if(g.deadline&&s<g.target){const[y,mo]=g.deadline.split('-').map(Number);const left=Math.max(1,(y-today.getFullYear())*12+(mo-1-today.getMonth()));per=`Perlu ±${fmt0((g.target-s)/left)} sebulan sampai ${monL(g.deadline)}`}else if(s>=g.target)per='Dah capai target 🎉';
+ return `<button class="card rb" style="display:block;width:100%;margin-top:10px" data-a="g-open" data-id="${g.id}"><div class="row between"><span class="title">${esc(g.name)}</span>${whoTag(g.owner)}</div>
+ <div class="row between" style="margin-top:6px"><b class="num disp" style="font-size:20px">${fmt0(s)}</b><span class="small muted num">daripada ${fmt0(g.target)}</span></div>
+ <div class="bar" style="margin-top:8px;--c:${OWN[g.owner].c}"><i style="width:${pct}%"></i></div><span class="tiny muted">${Math.round(pct)}%${per?', '+per:''}</span></button>`;
+}
+function fGoals(){
+ const list=db.goals.filter(g=>!g.archived&&!g.deleted&&(state.gOwner==='all'||g.owner===state.gOwner)),arch=db.goals.filter(g=>g.archived&&!g.deleted);
+ return `<button class="add-btn" data-a="g-new">${ic('plus',20,2.2)}Tambah saving goal</button>
+ <div style="margin-top:8px">${ownerChips(state.gOwner,'g-owner')}</div>
+ ${list.map(goalCard).join('')||`<div class="empty card" style="margin-top:10px"><p>Belum ada saving goal.</p></div>`}
+ ${arch.length?`<div class="group-h"><span>Arkib</span><span>${arch.length}</span></div><section class="card" style="padding:2px 16px"><ul class="list">${arch.map(g=>`<li><span class="grow"><span class="title" style="color:var(--ink-2)">${esc(g.name)}</span><span class="meta">${fmt0(goalSaved(g))} terkumpul</span></span>${canGoal(g)?`<button class="btn sm" data-a="g-restore" data-id="${g.id}">Restore</button>`:''}</li>`).join('')}</ul></section>`:''}`;
+}
+/* --- sheets --- */
+function openBal(p){
+ const m=state.finMonth,x=finSum(p,m),own=p===ME();
+ const r=(l,v,b)=>`<div class="row between"><span class="${b?'':'muted'}">${l}</span>${b?`<b class="num">${v}</b>`:`<span class="num">${v}</span>`}</div>`;
+ openSheet('bal',`${OWN[p].n}, ${monL(m)}`,`<div class="sh-b">
+  <section class="card stack" style="gap:8px;background:var(--bg)">
+   ${r('Gaji bersih'+(x.incFrom&&x.incFrom!==m?` <span class="tiny" style="color:var(--warn)">(guna ${monL(x.incFrom)})</span>`:''),fmt2(x.income))}
+   ${r('− Commitment dah bayar',fmt2(x.paid))}${r('− Simpanan bulan ni',fmt2(x.contrib))}
+   <div style="border-top:1px solid var(--line)"></div>${r('Baki anggaran',fmt2(x.est),1)}
+   ${x.overridden?r('Baki sebenar (manual)',fmt2(x.bal),1):''}
+   ${r('− Commitment belum bayar',fmt2(x.unpaid))}<div style="border-top:1px solid var(--line)"></div>${r('Lepas commitment',fmt2(x.after),1)}
+  </section>
+  ${own?`<button class="btn block" data-a="go-inc">Edit gaji ${monL(m)}</button>
+  <form class="stack" data-f="override"><input type="hidden" name="p" value="${p}"><label class="field" id="fOv">Baki sebenar (optional)<input type="number" step="0.01" inputmode="decimal" name="v" value="${x.overridden?num((db.balOverride[p]||{})[m]):''}" placeholder="Kosongkan untuk guna anggaran"><span class="hint">Isi kalau nak ikut baki bank sebenar bulan ni.</span></label><div class="row"><button class="btn pri grow">Save baki</button>${x.overridden?`<button type="button" class="btn" data-a="ov-clear" data-p="${p}">Guna anggaran</button>`:''}</div></form>`:`<p class="small muted" style="margin:0">View only. ${OWN[p].n} je boleh ubah gaji & baki dia.</p>`}
+ </div>`);
+}
+function openCom(id){
+ const m=state.finMonth,c=id?db.commitments.find(x=>x.id===id):{name:'',amount:'',owner:ME(),dueDay:'',repeat:'monthly',start:m,via:''};
+ if(!c)return;const can=!id||canFin(c),dis=can?'':'disabled';
+ const recurringMid=id&&c.repeat==='monthly'&&c.start<m;
+ const parents=db.commitments.filter(x=>x.id!==id&&!x.archived&&!x.via&&(x.owner===c.owner||x.owner==='shared'));
+ const segO=(can?[ME(),'shared']:[c.owner]).map(o=>`<button type="button" data-a="f-seg" data-n="owner" data-v="${o}" aria-pressed="${c.owner===o}" ${dis}>${dot(o)}${OWN[o].n}</button>`).join('');
+ const st=id?statusOf(c,m):'';
+ openSheet('com',id?esc(c.name):'Commitment baru',`<form class="sh-b" data-f="com" novalidate><input type="hidden" name="id" value="${id||''}"><input type="hidden" name="owner" value="${c.owner}">
+  ${!can?`<p class="small muted" style="margin:0">View only. Commitment ${OWN[c.owner].n} sorang.</p>`:''}
+  <label class="field" id="fCN">Nama<input name="name" value="${esc(c.name)}" maxlength="60" ${dis} placeholder="Contoh: Sewa rumah"><span class="msg" hidden>Isi nama.</span></label>
+  <div class="field">Owner<div class="seg full">${segO}</div></div>
+  <div class="two"><label class="field" id="fCA">Jumlah (RM)<input type="number" step="0.01" min="0" inputmode="decimal" name="amount" value="${id?baseAmt(c,m):''}" ${dis}><span class="msg" hidden>Nombor 0 ke atas.</span></label>
+  <label class="field" id="fCD">Due (hari bulan)<input type="number" min="1" max="31" name="dueDay" value="${id?(dueOf(c,m)||''):''}" ${dis} placeholder="1–31"><span class="msg" hidden>1 hingga 31.</span></label></div>
+  <label class="field">Ulang<select name="repeat" ${dis}><option value="monthly" ${c.repeat==='monthly'?'selected':''}>Setiap bulan</option><option value="once" ${c.repeat==='once'?'selected':''}>Sekali je</option></select>${id&&c.repeat==='monthly'&&c.start<m?`<span class="hint">Tukar ke “Sekali je” = stop lepas ${monL(m)}. Bulan lepas kekal.</span>`:''}</label>
+  <label class="field">Bayar guna (optional)<select name="pay" data-c="pay-sel" ${dis}><option value="">Tak set</option>${cats('pay').map(x=>`<option value="${x.id}" ${c.pay===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}<option value="__new">+ Tambah cara bayar baru…</option></select><span class="hint">Bank, e-wallet, kad. Kau tentukan sendiri.</span></label>
+  <label class="field" id="fPN" hidden>Nama cara bayar baru<input name="payNew" maxlength="40" placeholder="Contoh: Maybank, TNG, Kad kredit"><span class="msg" hidden>Isi nama cara bayar.</span></label>
+  <label class="field">Bayar melalui (optional)<select name="via" ${dis}><option value="">Bayar terus</option>${parents.map(x=>`<option value="${x.id}" ${c.via===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select><span class="hint">Contoh: Spotify masuk bil Shopee PayLater. Tak dikira 2 kali.</span></label>
+  ${id&&st==='paid'?`<p class="tiny faint" style="margin:0">Dah bayar ${monL(m)}. Jumlah rekod: ${fmt2(amtOf(c,m))}.</p>`:''}
+  ${id&&st==='unpaid'&&c.owner!==ME()?`<div>${waBtn(PARTNER(),`Hi ${OWN[PARTNER()].n} 👋\nReminder bil: ${c.name}, ${fmt2(amtOf(c,m))}${dueOf(c,m)?` (due ${dueOf(c,m)} ${MON[+m.slice(5)-1]})`:''}.${c.owner==='shared'?' Bil berdua.':''}\n\n– Our Space`,'Remind '+OWN[PARTNER()].n)}</div>`:''}
+  ${can?(recurringMid?`<div class="stack" style="gap:8px"><button class="btn pri block" name="scope" value="future">Save mulai ${monL(m)}</button><button class="btn block" name="scope" value="once">Save ${monL(m)} je</button></div>`:''):''}
+  ${can?`<div class="sh-a">${id?`<button type="button" class="btn danger" data-a="c-del" data-id="${id}">Delete</button>`:'<span></span>'}${recurringMid?'':`<button class="btn pri" name="scope" value="all">${id?'Save':'Tambah'}</button>`}</div>`:''}
+ </form>`);
+}
+function openGoal(id){
+ const g=id?db.goals.find(x=>x.id===id):{name:'',target:'',owner:'shared',deadline:''};if(!g)return;
+ const can=!id||canGoal(g),dis=can?'':'disabled',cs=id?db.contribs.filter(x=>x.goalId===id).sort((a,b)=>b.date.localeCompare(a.date)):[];
+ const segO=(can?[ME(),'shared']:[g.owner]).map(o=>`<button type="button" data-a="f-seg" data-n="owner" data-v="${o}" aria-pressed="${g.owner===o}" ${dis}>${dot(o)}${OWN[o].n}</button>`).join('');
+ openSheet('goal',id?esc(g.name):'Saving goal baru',`<div class="sh-b">
+  ${id?`<section class="card" style="background:var(--bg)"><div class="row between"><b class="disp num" style="font-size:22px">${fmt0(goalSaved(g))}</b><span class="small muted">daripada ${fmt0(g.target)}</span></div><div class="bar" style="margin-top:8px;--c:${OWN[g.owner].c}"><i style="width:${g.target?Math.min(100,goalSaved(g)/g.target*100):0}%"></i></div></section>
+  ${can?`<form class="quick" data-f="contrib"><input type="hidden" name="gid" value="${id}"><input type="number" step="0.01" min="0.01" inputmode="decimal" name="amount" placeholder="RM masuk tabung" aria-label="Jumlah"><button class="btn pri">${ic('plus',18,2.2)}Tambah</button></form>`:''}
+  <div><div class="group-h" style="margin-top:0"><span>Contribution</span><span>${cs.length}</span></div><ul class="list">${cs.map(x=>`<li><span class="grow"><span class="title num">${fmt2(x.amount)}</span><span class="meta">${dayL(x.date)} ${x.date.slice(0,4)}, by ${OWN[x.who].n}</span></span>${x.who===ME()?`<button class="ib" data-a="ct-del" data-id="${x.id}" aria-label="Delete contribution">${ic('close',16)}</button>`:''}</li>`).join('')||'<li class="muted">Belum ada.</li>'}</ul></div>`:''}
+  <form class="stack" data-f="goal" novalidate><input type="hidden" name="id" value="${id||''}"><input type="hidden" name="owner" value="${g.owner}">
+   <label class="field" id="fGN">Nama goal<input name="name" value="${esc(g.name)}" maxlength="60" ${dis} placeholder="Contoh: Emergency fund"><span class="msg" hidden>Isi nama.</span></label>
+   <div class="field">Owner<div class="seg full">${segO}</div></div>
+   <div class="two"><label class="field" id="fGT">Target (RM)<input type="number" step="1" min="1" name="target" value="${g.target}" ${dis}><span class="msg" hidden>Lebih dari 0.</span></label><label class="field">Target bila (optional)<input type="month" name="deadline" value="${g.deadline||''}" ${dis}></label></div>
+   ${can?`<div class="sh-a">${id?`<button type="button" class="btn danger" data-a="g-arch" data-id="${id}">Arkib</button>`:'<span></span>'}<button class="btn pri">${id?'Save':'Tambah goal'}</button></div>`:`<p class="small muted" style="margin:0">View only. Goal ${OWN[g.owner].n} sorang.</p>`}
+  </form></div>`);
+}
+/* ================= Records ================= */
+const canSeeFile=f=>f.visibility!=='private'||f.owner===ME();
+const canEditFile=f=>f.owner===ME()||f.visibility!=='private';
+function histItems(){
+ const out=[],skip=a=>(a.kind==='task'&&/^completed /.test(a.t3))||(a.kind==='fin'&&/^paid /.test(a.t3))||(a.kind==='goal'&&/^added RM/.test(a.t3));
+ db.tasks.filter(t=>t.status==='done'&&t.doneAt).forEach(t=>out.push({at:t.doneAt,who:t.doneBy||t.owner,type:'task',text:`siapkan ${q(t.title)}`}));
+ db.occ.filter(o=>o.status==='paid'&&o.paidAt).forEach(o=>{const c=db.commitments.find(x=>x.id===o.cid);out.push({at:o.paidAt,who:o.by||'',type:'fin',text:`bayar ${q(c?c.name:'commitment lama')} untuk ${monL(o.month)}, ${fmt2(o.paidAmount)}`})});
+ db.contribs.forEach(x=>{const g=db.goals.find(y=>y.id===x.goalId);out.push({at:x.at||pk(x.date).getTime()+43200000,who:x.who,type:'fin',text:`masuk ${fmt2(x.amount)} ke ${q(g?g.name:'goal')}`})});
+ db.activity.filter(a=>!skip(a)).forEach(a=>out.push({at:a.at,who:a.who,type:a.kind==='fin'||a.kind==='goal'?'fin':a.kind==='house'||a.kind==='shop'?'house':a.kind==='file'?'file':'task',text:a.t3}));
+ return out.filter(i=>OWN[i.who]&&i.who!=='shared').sort((a,b)=>b.at-a.at);
+}
+function vRecords(){
+ return `<div class="ph"><h1 class="disp">Records</h1><p>Files penting & history berdua.</p></div>
+ <input type="search" data-c="r-q" value="${esc(state.rq)}" placeholder="Cari file atau history…" aria-label="Cari" style="margin-bottom:10px">
+ <div class="seg full" role="group" aria-label="Bahagian">${[['files','Files'],['hist','History']].map(([v,l])=>`<button data-a="r-tab" data-v="${v}" aria-pressed="${state.rTab===v}">${l}</button>`).join('')}</div>
+ ${state.rTab==='files'?vFiles():vHist()}`;
+}
+function fileRow(f){const me=ME(),ex=f.expiry?dfrom(f.expiry):null;return `<li><button class="rb" data-a="f-open" data-id="${f.id}"><span class="ti" style="width:40px;height:40px">${ic(f.visibility==='private'?'lock':'doc',19)}</span><span class="grow"><span class="title">${esc(f.name)}</span><span class="meta">${state.rFolder==='root'||state.rq?`<span>${esc(catName(f.folder))}</span>`:''}<span>By ${OWN[f.owner].n}</span>${f.visibility==='private'?'<span>Only me</span>':''}${f.tags.map(u=>`<span class="who">${dot(u)}Untuk ${u===me?'kau':OWN[u].n}</span>`).join('')}${ex!=null&&ex<=30?`<span class="pill ${ex<0?'red':'low'}">${ex<0?'Dah expire':'Expire '+relL(f.expiry).toLowerCase()}</span>`:''}</span></span></button></li>`}
+const fileFolder=f=>db.categories.some(c=>c.id===f.folder&&c.area==='folder')?f.folder:'';
+function visFilter(list){const me=ME();if(state.rVis==='shared')return list.filter(f=>f.visibility!=='private');if(state.rVis==='private')return list.filter(f=>f.visibility==='private');if(state.rVis==='tagged')return list.filter(f=>f.tags.includes(me));return list}
+const visChips=()=>`<div class="chips" style="margin-top:10px">${[['all','Semua'],['shared','Shared'],['private','Only me'],['tagged','Untuk aku']].map(([v,l])=>`<button class="chip" data-a="r-vis" data-v="${v}" aria-pressed="${state.rVis===v}">${l}</button>`).join('')}</div>`;
+function vFiles(){
+ const vis=db.files.filter(canSeeFile).sort((a,b)=>b.addedAt-a.addedAt),qq=state.rq.trim().toLowerCase();
+ if(qq){const r=visFilter(vis.filter(f=>(f.name+' '+f.note+' '+catName(f.folder)).toLowerCase().includes(qq)));
+  return `${visChips()}${r.length?`<section class="card" style="padding:2px 16px;margin-top:10px"><ul class="list">${r.map(fileRow).join('')}</ul></section>`:'<div class="empty card" style="margin-top:10px"><p>Takde file jumpa.</p></div>'}`}
+ if(state.rFolder==='root'){
+  const folders=cats('folder').slice().sort((a,b)=>a.name.localeCompare(b.name)),loose=vis.filter(f=>!fileFolder(f));
+  const tile=(id,name)=>{const n=vis.filter(f=>fileFolder(f)===id).length;return `<button class="ftile" data-a="r-folder" data-v="${id}"><span class="fi">${ic('folder',26)}</span><span class="fn">${esc(name)}</span><span class="tiny muted">${n} file</span></button>`};
+  const list=visFilter(vis);
+  return `<button class="add-btn" data-a="f-new">${ic('plus',20,2.2)}Upload file</button>
+  <div class="sec-h"><span>Folder</span><span class="small muted">${folders.length}</span></div>
+  <div class="fgrid">${folders.map(c=>tile(c.id,c.name)).join('')}${loose.length?tile('','Lain-lain'):''}<button class="ftile new" data-a="fo-new"><span class="fi">${ic('plus',26)}</span><span class="fn">Folder baru</span><span class="tiny muted">&nbsp;</span></button></div>
+  <div class="sec-h"><span>Semua file</span><span class="small muted">${list.length}</span></div>${visChips()}
+  ${list.length?`<section class="card" style="padding:2px 16px;margin-top:10px"><ul class="list">${list.map(fileRow).join('')}</ul></section>`:'<div class="empty card" style="margin-top:10px"><p>Takde file lagi.</p></div>'}
+  <p class="tiny faint" style="margin:10px 2px">Upload masuk Google Drive. “Only me” = partner tak nampak langsung. Delete file: owner je.</p>`;
+ }
+ const id=state.rFolder,name=id?catName(id):'Lain-lain',list=visFilter(vis.filter(f=>fileFolder(f)===id));
+ return `<div class="crumb"><button class="ib" data-a="r-folder" data-v="root" aria-label="Balik ke semua folder">${ic('left',18)}</button><h2 class="disp">${esc(name)}</h2>${id?`<button class="btn sm" data-a="fo-edit" data-id="${id}">Edit</button>`:''}</div>
+ <p class="tiny muted" style="margin:0 2px">Records › ${esc(name)}</p>
+ <button class="add-btn" data-a="f-new">${ic('plus',20,2.2)}Upload ke ${esc(name)}</button>${visChips()}
+ ${list.length?`<section class="card" style="padding:2px 16px;margin-top:10px"><ul class="list">${list.map(fileRow).join('')}</ul></section>`:'<div class="empty card" style="margin-top:10px"><p>Folder ni kosong.</p></div>'}`;
+}
+function openFolder(id){
+ const c=id?db.categories.find(x=>x.id===id):{name:''};if(!c)return;const n=db.files.filter(f=>f.folder===id).length;
+ openSheet('folder',id?'Edit folder':'Folder baru',`<form class="sh-b" data-f="folder" novalidate><input type="hidden" name="id" value="${id||''}">
+  <label class="field" id="fFoN">Nama folder<input name="name" value="${esc(c.name)}" maxlength="40" placeholder="Contoh: Kereta" autocomplete="off"><span class="msg" hidden>Isi nama folder.</span></label>
+  ${id?`<p class="tiny faint" style="margin:0">${n} file dalam folder ni. Delete folder → file pindah ke Lain-lain.</p>`:''}
+  <div class="sh-a">${id?`<button type="button" class="btn danger" data-a="cat-del" data-id="${id}">Delete folder</button>`:'<span></span>'}<button class="btn pri">${id?'Save':'Buat folder'}</button></div></form>`);
+}
+function vHist(){
+ const qq=state.rq.trim().toLowerCase();
+ let list=histItems().filter(i=>(state.rType==='all'||i.type===state.rType)&&(state.rWho==='all'||i.who===state.rWho)&&(!qq||(OWN[i.who].n+' '+i.text).toLowerCase().includes(qq)));
+ const shown=list.slice(0,150);let html='',last='';
+ shown.forEach(i=>{const k=dk(new Date(i.at));if(k!==last){if(last)html+='</ul></section>';html+=`<div class="group-h"><span>${relL(k)}${dfrom(k)<-1&&dfrom(k)>-7?', '+dayL(k):''}${dfrom(k)<=-7?' '+k.slice(0,4):''}</span></div><section class="card" style="padding:2px 16px"><ul class="list">`;last=k}
+  const d=new Date(i.at);html+=`<li style="min-height:50px">${av(i.who,'sm')}<span class="grow small"><b>${OWN[i.who].n}</b> ${esc(i.text)}</span><span class="tiny faint">${pad(d.getHours())}:${pad(d.getMinutes())}</span></li>`});
+ if(last)html+='</ul></section>';
+ return `<div class="chips" style="margin-top:10px">${[['all','Semua'],['task','Tasks'],['fin','Finance'],['house','Household'],['file','Files']].map(([v,l])=>`<button class="chip" data-a="r-type" data-v="${v}" aria-pressed="${state.rType===v}">${l}</button>`).join('')}</div>
+ <div class="chips" style="margin-top:6px">${[['all','Berdua'],['pa',OWN.pa.n],['pb',OWN.pb.n]].map(([v,l])=>`<button class="chip" data-a="r-who" data-v="${v}" aria-pressed="${state.rWho===v}">${v!=='all'?dot(v):''}${l}</button>`).join('')}</div>
+ ${html||`<div class="empty card" style="margin-top:10px"><p>${qq?'Takde history jumpa.':'Belum ada history.'}</p></div>`}
+ ${list.length>150?`<p class="tiny faint" style="margin:10px 2px">Tunjuk 150 terkini. Guna carian untuk yang lama.</p>`:''}
+ <p class="tiny faint" style="margin:10px 2px">Task siap & bayaran disimpan selamanya. Log aktiviti lain simpan 300 terkini.</p>`;
+}
+function openFile(id){
+ const me=ME(),p=PARTNER(),f=id?db.files.find(x=>x.id===id):{name:'',folder:state.rFolder==='root'?'':state.rFolder,owner:me,visibility:'shared',tags:[],expiry:'',note:'',url:''};
+ if(!f||(id&&!canSeeFile(f)))return;const mine=f.owner===me,can=!id||canEditFile(f),dis=can?'':'disabled';
+ openSheet('file',id?esc(f.name):'Upload file',`<form class="sh-b" data-f="file" novalidate><input type="hidden" name="id" value="${id||''}">
+  ${id?`<p class="tiny faint" style="margin:0">By ${OWN[f.owner].n}, ${ago(f.addedAt).toLowerCase()}</p>${f.url?`<a class="btn block" href="${esc(f.url)}" target="_blank" rel="noopener">${ic('folder',18)}Buka dalam Drive</a>`:''}`
+  :`<label class="field" id="fFile">File<input type="file" name="file" id="fileIn"><span class="hint">${IS_GAS?'Masuk Google Drive, folder Our Space.':'Demo: file tak disimpan.'} Max 15MB.</span><span class="msg" hidden>Pilih file dulu.</span></label>`}
+  <label class="field" id="fFN">Nama<input name="name" id="fileName" value="${esc(f.name)}" maxlength="100" ${dis}><span class="msg" hidden>Isi nama file.</span></label>
+  <label class="field">Folder<select name="folder" data-c="fold-sel" ${dis}><option value="">Lain-lain</option>${cats('folder').map(c=>`<option value="${c.id}" ${f.folder===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}<option value="__new">+ Folder baru…</option></select></label>
+  <label class="field" id="fFold" hidden>Nama folder baru<input name="folderNew" maxlength="40"><span class="msg" hidden>Isi nama folder.</span></label>
+  <label class="field">Siapa boleh nampak<select name="visibility" ${mine?'':'disabled'}><option value="shared" ${f.visibility!=='private'?'selected':''}>Berdua</option><option value="private" ${f.visibility==='private'?'selected':''}>Only me</option></select>${mine?'':'<span class="hint">Owner je boleh tukar.</span>'}</label>
+  <label class="checkline"><input type="checkbox" name="tagP" ${f.tags.includes(p)?'checked':''} ${dis}> Tag ${OWN[p].n}, file ni kena mengena dengan dia</label>
+  <label class="checkline"><input type="checkbox" name="tagMe" ${f.tags.includes(me)?'checked':''} ${dis}> Tag aku</label>
+  <label class="field">Tarikh expire / renew (optional)<input type="date" name="expiry" value="${f.expiry||''}" ${dis}></label>
+  <label class="field">Nota (optional)<input name="note" value="${esc(f.note)}" maxlength="200" ${dis}></label>
+  ${can?`<div class="sh-a">${id&&mine?`<button type="button" class="btn danger" data-a="f-del" data-id="${id}">Delete</button>`:'<span></span>'}<button class="btn pri" id="fileBtn">${id?'Save':'Upload'}</button></div>`:''}
+ </form>`);
+}
+/* ================= Sheets ================= */
+function openSheet(id,title,body){
+ const was=state.sheet===id;state.sheet=id;
+ $('#sheet').innerHTML=`<div class="sh-h"><h2 id="shT">${title}</h2><button class="ib" data-a="close" aria-label="Tutup">${ic('close',18)}</button></div>${body}`;
+ $('#sheet').classList.add('open');$('#scrim').classList.add('open');
+ if(!was&&['task','item','meal'].includes(id)){const f=$('#sheet input[name=title],#sheet input[name=name]');if(f&&!f.value)setTimeout(()=>f.focus(),220)}
+}
+function closeSheet(){if(state.confirm){const r=state.confirm;state.confirm=null;r(false)}state.sheet=null;$('#sheet').classList.remove('open');$('#scrim').classList.remove('open');if(state.dirty){state.dirty=false;render()}}
+function openSettings(){
+ const u=ME(),b=db.brief[u]||{on:false,time:'07:00'};
+ openSheet('settings','Settings',`<div class="sh-b">
+  <div class="row">${av(u)}<div><b>${OWN[u].n}</b><div class="small muted">${IS_GAS?esc(srv.email):'Demo account'}</div></div></div>
+  <button class="btn" data-a="theme">${ic('palette',16)}Tema & warna</button>
+  <button class="btn" data-a="names">Nama & warna orang</button>
+  <form class="stack" data-f="prefs">
+   <label class="field" id="fPhone">Nombor WhatsApp aku<input name="phone" inputmode="tel" placeholder="60123456789" value="${esc(db.phones[u]||'')}"><span class="hint">Untuk butang nudge. Mula dengan 60.</span><span class="msg" hidden>Nombor tak betul. Contoh: 60123456789</span></label>
+   <label class="checkline"><input type="checkbox" name="on" ${b.on?'checked':''}> Daily brief ke email setiap pagi</label>
+   <div class="field">Masukkan dalam brief<div class="stack" style="gap:8px;font-weight:500">${[['tasks','Task hari ni & lewat'],['bills','Bil due 3 hari'],['house','Barang habis / low'],['cal','Calendar hari ni']].map(([k,l])=>`<label class="checkline"><input type="checkbox" name="inc_${k}" ${(b.inc||{})[k]!==false?'checked':''}> ${l}</label>`).join('')}</div></div>
+   <label class="field">Pukul<select name="time">${['06:00','07:00','08:00','09:00'].map(x=>`<option value="${x}" ${b.time===x?'selected':''}>${t12(x)}</option>`).join('')}</select></label>
+   <button class="btn pri">Save</button>
+  </form>
+  <button class="btn" data-a="guide">${ic('book',16)}Cara guna</button>
+  ${IS_GAS?`<button class="btn" data-a="force-refresh">Refresh data sekarang</button><p class="tiny faint" style="margin:0">Nak tukar akaun? Sign out Google dalam Chrome, lepas tu buka balik.</p>`:`<div class="row"><button class="btn" data-a="logout">Tukar akaun (demo)</button><button class="btn danger" data-a="reset">Reset demo</button></div>`}
+ </div>`);
+}
+function openForYou(){
+ const me=ME(),seen=db.seen[me]||0,list=forMe();
+ openSheet('foryou','Untuk kau',`<div class="sh-b"><ul class="list">${list.map(a=>`<li style="${a.at>seen?'background:color-mix(in srgb,var(--cocoa) 8%,transparent);border-radius:12px;padding-left:8px;padding-right:8px':''}"><button class="rb" data-a="act-open" data-id="${a.id}">${av(a.who,'sm')}<span class="grow small"><b>${OWN[a.who].n}</b> ${esc(a.tYou)}</span><span class="tiny faint">${ago(a.at)}</span></button></li>`).join('')||'<li class="muted">Takde apa-apa untuk kau sekarang.</li>'}</ul><p class="tiny faint" style="margin:0">Semua history penuh ada dalam Records.</p></div>`);
+ db.seen[me]=Date.now();save();setTimeout(render,600);
+}
+function openGuide(){
+ const T=(t,b)=>`<details class="tip"><summary>${t}</summary>${b}</details>`;
+ openSheet('guide','Cara guna Our Space',`<div class="sh-b"><div>
+ ${T('Mula: letak kat home screen','<ul><li>Buka link Our Space dalam Chrome.</li><li>⋮ → <b>Add to Home screen</b>.</li><li>Isi nombor WhatsApp dalam Settings (avatar atas kanan).</li></ul>')}
+ ${T('Home','<p>Ringkasan je: task perlu perhatian, benda akan datang, duit lepas commitment, shopping list, saving goal. Tap untuk masuk detail.</p>')}
+ ${T('Tasks','<ul><li>Tekan <b>+ Task</b>. Pilih nama korang atau Shared.</li><li>Tick bulat = siap. Tick lagi = buka semula.</li><li>Tap task untuk edit, tukar status, atau delete.</li><li>Delete: task kau, task Shared, atau task yang kau buat.</li></ul>')}
+ ${T('Task berulang & chores','<p>Set <b>Ulang</b> (hari / minggu / bulan). Bila siap, task seterusnya keluar sendiri. On <b>Bergilir</b> untuk tukar giliran antara korang setiap kali.</p>')}
+ ${T('Calendar','<p>Tasks → <b>Calendar</b>. Task masuk calendar bila on “Show in calendar”. Bil & meal plan boleh on/off. Tap tarikh → tengok & tambah task hari tu.</p>')}
+ ${T('Inventory','<ul><li>Tekan − / + bila guna atau beli.</li><li>Sama atau bawah minimum = Running low. 0 = Out.</li><li><b>Urus kategori</b> untuk buat kategori sendiri.</li></ul>')}
+ ${T('Shopping list','<ul><li>Taip barang, tekan +.</li><li>Tick = dah beli. Kalau link dengan stok, stok naik sekali je.</li><li>Butang WhatsApp hantar list ke partner.</li></ul>')}
+ ${T('Meal plan','<p>Isi menu & bahan setiap hari. App check stok, tekan <b>Masuk shopping list</b> untuk bahan tak cukup.</p>')}
+ ${T('Finance: baki & gaji','<ul><li>Tap kad nama korang → isi <b>gaji bersih</b> bulan tu.</li><li><b>Baki anggaran</b> = gaji − commitment dah bayar − simpanan bulan ni.</li><li><b>Lepas commitment</b> = baki − commitment belum bayar.</li><li>Nak ikut baki bank sebenar? Isi <b>Baki sebenar</b>.</li><li>Shared dikira 50/50.</li></ul>')}
+ ${T('Finance: commitment','<ul><li>Tick bila dah bayar. Rekod tarikh & siapa bayar.</li><li>Bulan baru = semua berulang mula Unpaid. Bulan lepas kekal.</li><li>Edit: pilih <b>bulan ni je</b> atau <b>mulai bulan ni</b>.</li><li>Delete: <b>buang bulan ni je</b> atau <b>stop mulai bulan ni</b>. History kekal.</li><li>“Bayar melalui”: contoh Spotify dalam bil PayLater, tak kira 2 kali.</li></ul>')}
+ ${T('Finance: saving goals','<ul><li>Goal untuk sorang atau Shared.</li><li>Tap goal → tambah contribution. Delete satu-satu (milik sendiri).</li><li>Arkib goal = sorok je, contribution kekal.</li></ul>')}
+ ${T('Records: Files','<ul><li><b>Upload file</b> → masuk Google Drive. Pilih folder, atau buat folder baru terus.</li><li><b>Only me</b> = partner tak nampak langsung.</li><li>Tag partner kalau file tu untuk dia. Dia nampak kat Home.</li><li>Rename / pindah folder: dua-dua boleh. Delete: owner je (masuk Trash Drive 30 hari).</li><li>Delete folder → file pindah ke Lain-lain.</li></ul>')}
+ ${T('Records: History','<p>Semua yang jadi: task siap, bayaran, simpanan, barang rumah, file. Cari & filter ikut jenis atau orang.</p>')}
+ ${T('Sync','<ul><li>Titik hijau = Saved. Kuning = Saving. Merah = Offline, app cuba lagi sendiri.</li><li>Perubahan partner masuk bila buka app semula, atau setiap 1 minit.</li></ul>')}
+ ${T('WhatsApp nudge','<p>Butang hijau buka WhatsApp dengan mesej siap tulis. Kau tekan Send sendiri. Ada kat:</p><ul><li>Task (partner / Shared) → Nudge</li><li>Commitment belum bayar → Remind</li><li>Inventory habis → Hantar</li><li>Shopping list → Hantar list</li><li>Calendar → Share hari tu</li></ul><p>Isi nombor dalam Settings dulu.</p>')}
+ </div></div>`);
+}
+
+/* ================= Validation ================= */
+function fieldErr(id,on){const f=$('#'+id);if(!f)return;f.classList.toggle('err',on);const m=f.querySelector('.msg');if(m)m.hidden=!on}
+
+/* ================= Click actions ================= */
+document.addEventListener('click',async e=>{
+ const nav=e.target.closest('[data-nav]');if(nav){go(nav.dataset.nav);return}
+ const b=e.target.closest('[data-a]');if(!b||b.disabled)return;
+ const a=b.dataset.a,id=b.dataset.id;
+ switch(a){
+ case'login':prefs.user=b.dataset.u;savePrefs();state.view='home';showApp();break;
+ case'logout':prefs.user=null;savePrefs();closeSheet();showLogin();break;
+ case'reset':closeSheet();if(await confirmBox('Reset demo?','Semua data & nama dalam demo ni akan padam.','Reset')){db=seed();store(KEY,db);prefs.user=null;savePrefs();closeSheet();showLogin()}else closeSheet();break;
+ case'close':closeSheet();break;
+ case'force-refresh':closeSheet();lastRefresh=0;refresh(true);toast('Refreshing…');break;
+ case'retry-boot':bootGas();break;
+ case'cf-yes':{const r=state.confirm;state.confirm=null;r&&r(true);break}
+ case'cf-no':closeSheet();break;
+ case'cf-pick':{const r=state.confirm;state.confirm=null;r&&r(b.dataset.v);break}
+ case'theme':openTheme();break;
+ case'names':openSheet('names','Nama & warna',`<div class="sh-b">${nameForm(false)}</div>`);break;
+ case'pick-col':{const f=b.closest('form');f.querySelector(`[name=color_${b.dataset.p}]`).value=b.dataset.v;b.parentElement.querySelectorAll('button').forEach(x=>{const on=x===b;x.setAttribute('aria-pressed',on);x.innerHTML=on?ic('check',16,2.6):''});break}
+ case'set-pal':applyTheme(null,b.dataset.v);openTheme();break;
+ case'set-theme':applyTheme(b.dataset.v);openTheme();break;
+ case'settings':openSettings();break;
+ case'guide':prefs.guideSeen=true;savePrefs();openGuide();render();break;
+ case'guide-ok':prefs.guideSeen=true;savePrefs();render();break;
+ case'foryou':openForYou();break;
+ case'act-open':{const x=db.activity.find(y=>y.id===id);closeSheet();if(x&&x.kind==='task'&&db.tasks.some(t=>t.id===x.ref)){state.view='tasks';render();openTask(x.ref)}break}
+ case'go':go(b.dataset.v);break;
+ case'go-cal':state.tView='cal';state.calMonth=CUR;state.calDay=TK;go('tasks');break;
+ case'go-files':state.rTab='files';state.rVis='all';go('records');break;
+ case'go-h':state.hTab=b.dataset.v;go('household');break;
+ case'wa-missing':{const to=b.dataset.to;toast(to===ME()?'Isi nombor WhatsApp kau dalam Settings dulu.':`${OWN[to].n} belum isi nombor WhatsApp dalam Settings.`,true);break}
+ /* tasks */
+ case'tview':state.tView=b.dataset.v;render();break;
+ case't-owner':state.tOwner=b.dataset.v;render();break;
+ case't-new':openTask(null,b.dataset.due?{due:b.dataset.due,showCal:true}:null);break;
+ case't-edit':openTask(id);break;
+ case't-done':{const t=db.tasks.find(x=>x.id===id);if(!t){toast('Task ni dah takde.',true);render();break}
+  if(t.status==='done'){t.status='todo';t.doneAt=0;t.doneBy='';t.updatedAt=Date.now();save();render();toast('Task dibuka semula')}
+  else{const msg=completeTask(t);save();render();toast(msg)}break}
+ case't-del':{const t=db.tasks.find(x=>x.id===id);if(!t||!canDelTask(t)){toast('Kau tak boleh delete task ni.',true);break}
+  const ok=await confirmBox('Delete task?',`${q(esc(t.title))} akan dibuang. Task lain tak terjejas.${t.repeat!=='none'?' Ulangan seterusnya pun stop.':''}`);
+  if(ok){db.tasks=db.tasks.filter(x=>x.id!==id);log(`deleted ${q(t.title)}`,`deleted ${q(t.title)}`,[],'task');save();closeSheet();render();toast('Task deleted')}else openTask(id);break}
+ case'f-seg':{const f=b.closest('form');f.querySelector(`[name=${b.dataset.n}]`).value=b.dataset.v;b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));break}
+ /* calendar */
+ case'cal-m':state.calMonth=shiftM(state.calMonth,+b.dataset.d);state.calDay=state.calMonth===CUR?TK:state.calMonth+'-01';render();break;
+ case'cal-day':state.calDay=b.dataset.k;if(state.calDay.slice(0,7)!==state.calMonth)state.calMonth=state.calDay.slice(0,7);render();break;
+ case'cal-today':state.calMonth=CUR;state.calDay=TK;render();break;
+ case'cal-show':prefs.calShow[b.dataset.v]=!prefs.calShow[b.dataset.v];savePrefs();render();break;
+ /* household */
+ case'h-tab':state.hTab=b.dataset.v;render();break;
+ case'inv-cat':state.invCat=b.dataset.v;render();break;
+ case'shop-cat':state.shopCat=b.dataset.v;render();break;
+ case'cat-mgr':openCats(b.dataset.v);break;
+ case'cat-del':{const c=db.categories.find(x=>x.id===id);if(!c)break;const list=catList(c.area),fl=catFld(c.area),n=list.filter(x=>x[fl]===id).length;
+  const ok=await confirmBox(`Delete ${q(esc(c.name))}?`,n?(c.area==='pay'?`${n} commitment jadi “Tak set”. Commitment tak hilang.`:c.area==='folder'?`${n} file pindah ke “Lain-lain”. File tak hilang.`:`${n} item akan pindah ke “Lain-lain”. Item tak hilang.`):'Takde item guna ni.');
+  if(ok){list.forEach(x=>{if(x[fl]===id)x[fl]=''});db.categories=db.categories.filter(x=>x.id!==id);if(state.invCat===id)state.invCat='all';if(state.shopCat===id)state.shopCat='all';if(state.rFolder===id)state.rFolder='root';save();render();toast(c.area==='folder'?'Folder deleted':'Kategori deleted')}if(c.area==='folder'){if(ok)closeSheet();else openFolder(id)}else openCats(c.area);break}
+ case'i-new':openItem();break;
+ case'i-edit':openItem(id);break;
+ case'i-qty':{const i=db.inventory.find(x=>x.id===id);if(!i)break;i.qty=Math.max(0,num(i.qty)+ +b.dataset.d);i.updatedAt=Date.now();save();render();break}
+ case'i-del':{const i=db.inventory.find(x=>x.id===id);if(!i)break;const linked=db.shopping.filter(s=>s.invId===id&&!s.bought).length;
+  const ok=await confirmBox('Delete item?',`${q(esc(i.name))} akan dibuang dari inventory.${linked?` ${linked} barang dalam shopping list kekal, cuma tak link stok lagi.`:''}`);
+  if(ok){db.inventory=db.inventory.filter(x=>x.id!==id);db.shopping.forEach(s=>{if(s.invId===id)s.invId=''});log(`removed ${q(i.name)} from inventory`,`removed ${q(i.name)} from inventory`,[],'house');save();closeSheet();render();toast('Item deleted')}else openItem(id);break}
+ case'low-to-shop':{let n=0;db.inventory.filter(i=>stockSt(i)!=='ok').forEach(i=>{if(addToShop(i.name,Math.max(1,num(i.min)-num(i.qty)+1),{invId:i.id}))n++});save();state.hTab='shop';render();toast(n?`${n} barang masuk shopping list`:'Semua dah ada dalam list');break}
+ case's-buy':{const s=db.shopping.find(x=>x.id===id);if(!s)break;s.bought=!s.bought;s.boughtAt=s.bought?Date.now():0;applyBought(s,s.bought);save();render();toast(s.bought?(s.stockApplied?'Dah beli ✓ Stok naik':'Dah beli ✓'):'Masuk balik list');break}
+ case's-edit':openShop(id);break;
+ case's-del':{const s=db.shopping.find(x=>x.id===id);if(!s)break;const ok=await confirmBox('Delete barang?',`${q(esc(s.name))} akan dibuang dari list. Stok tak berubah.`);
+  if(ok){db.shopping=db.shopping.filter(x=>x.id!==id);save();closeSheet();render();toast('Barang deleted')}else openShop(id);break}
+ case's-clear':{const n=db.shopping.filter(x=>x.bought).length;const ok=await confirmBox('Clear barang dah beli?',`${n} barang akan dibuang dari list. Stok tak berubah.`,'Clear');closeSheet();if(ok){db.shopping=db.shopping.filter(x=>!x.bought);save();render();toast('List dah clear')}break}
+ /* finance */
+ case'fm':state.finMonth=shiftM(state.finMonth,+b.dataset.d);render();break;
+ case'fm-now':state.finMonth=CUR;render();break;
+ case'ftab':state.finTab=b.dataset.v;render();window.scrollTo({top:0});break;
+ case'c-owner':state.cOwner=b.dataset.v;render();break;
+ case'g-owner':state.gOwner=b.dataset.v;render();break;
+ case'bal':openBal(b.dataset.p);break;
+ case'ov-clear':{const p=b.dataset.p;if(p!==ME())break;delete db.balOverride[p][state.finMonth];save();render();openBal(p);toast('Guna baki anggaran');break}
+ case'c-new':openCom();break;
+ case'c-edit':openCom(id);break;
+ case'c-pay':{const m=state.finMonth,c=db.commitments.find(x=>x.id===id);if(!c){toast('Commitment ni dah takde.',true);render();break}if(!canFin(c)){toast('Commitment ni milik '+OWN[c.owner].n+'.',true);break}
+  const oid=m+'|'+c.id;let o=db.occ.find(x=>x.id===oid);
+  if(o&&o.status==='paid'){const ok=await confirmBox('Tanda belum bayar?',`${q(esc(c.name))} untuk ${monL(m)} akan jadi Unpaid semula.`,'Ya, belum bayar',false);closeSheet();if(!ok)break;
+   if(o.amount!=null&&o.amount!==''){o.status='unpaid';delete o.paidAt;delete o.by;delete o.paidAmount}else db.occ=db.occ.filter(x=>x.id!==oid);save();render();toast('Tanda belum bayar')}
+  else{const amt=amtOf(c,m);if(!o){o={id:oid,month:m,cid:c.id};db.occ.push(o)}o.status='paid';o.paidAt=Date.now();o.by=ME();o.paidAmount=amt;
+   log(`paid ${q(c.name)} (${fmt2(amt)}) for ${monL(m)}`,`paid ${q(c.name)} (${fmt2(amt)}) for ${monL(m)}`,c.owner==='shared'?[PARTNER()]:[],'fin',c.id);save();render();toast('Dah bayar ✓')}
+  break}
+ case'c-del':{const m=state.finMonth,c=db.commitments.find(x=>x.id===id);if(!c||!canFin(c))break;
+  const hasHist=db.occ.some(o=>o.cid===c.id&&o.status==='paid');
+  let opts,body;
+  if(c.repeat==='monthly'){opts=[{v:'skip',label:`Buang ${monL(m)} je`},{v:'stop',label:`Stop mulai ${monL(m)}`,cls:'danger'}];body='Rekod bayar bulan-bulan lepas kekal dalam Records.'}
+  else{opts=[{v:'del',label:'Delete commitment',cls:'danger'}];body=hasHist?'Rekod bayar kekal dalam Records.':'Commitment sekali ni akan dibuang.'}
+  const v=await choiceBox(`Delete ${q(esc(c.name))}?`,body,opts);closeSheet();if(!v)break;
+  const oid=m+'|'+c.id;
+  if(v==='skip'){let o=db.occ.find(x=>x.id===oid);if(o&&o.status==='paid'){toast('Dah bayar bulan ni. Untick dulu kalau nak skip.',true);break}if(!o){o={id:oid,month:m,cid:c.id};db.occ.push(o)}o.status='skip';toast(`Skip ${monL(m)}`)}
+  if(v==='stop'){const any=db.occ.some(o=>o.cid===c.id);if(c.start>=m&&!any){db.commitments=db.commitments.filter(x=>x.id!==c.id)}else{c.endMonth=shiftM(m,-1);db.occ=db.occ.filter(o=>!(o.cid===c.id&&o.month>=m&&o.status!=='paid'))}
+   db.commitments.forEach(k=>{if(k.via===c.id&&(!k.endMonth||k.endMonth>=m))k.via=''});toast('Commitment stop')}
+  if(v==='del'){if(hasHist)c.archived=true;else{db.commitments=db.commitments.filter(x=>x.id!==c.id);db.occ=db.occ.filter(o=>o.cid!==c.id)}toast('Commitment deleted')}
+  log(`removed ${q(c.name)} (${v==='skip'?monL(m)+' only':v==='stop'?'from '+monL(m):'one-time'})`,`removed ${q(c.name)}`,c.owner==='shared'?[PARTNER()]:[],'fin',c.id);
+  save();render();break}
+ /* records */
+ case'r-tab':state.rTab=b.dataset.v;render();break;
+ case'r-folder':state.rFolder=b.dataset.v;render();break;
+ case'r-vis':state.rVis=b.dataset.v;render();break;
+ case'r-type':state.rType=b.dataset.v;render();break;
+ case'r-who':state.rWho=b.dataset.v;render();break;
+ case'f-new':openFile();break;
+ case'fo-new':openFolder();break;
+ case'fo-edit':openFolder(id);break;
+ case'f-open':openFile(id);break;
+ case'f-del':{const f=db.files.find(x=>x.id===id);if(!f||f.owner!==ME())break;const ok=await confirmBox(`Delete ${q(esc(f.name))}?`,f.driveId?'File masuk Trash Google Drive (boleh recover 30 hari). File lain tak terjejas.':'File dibuang dari Records. File lain tak terjejas.');
+  if(!ok){openFile(id);break}db.files=db.files.filter(x=>x.id!==id);log(`deleted file ${q(f.name)}`,`deleted file ${q(f.name)}`,[],'file',f.id);save();if(IS_GAS&&f.driveId)gas('trashFile',f.driveId).catch(()=>toast('File dibuang dari app, tapi Drive tak dapat trash. Buang manual.',true));closeSheet();render();toast('File deleted');break}
+ case'go-inc':closeSheet();state.finTab='inc';render();window.scrollTo({top:0});break;
+ case'l-new':openLine(b.dataset.p);break;
+ case'l-edit':openLine(b.dataset.p,id);break;
+ case'l-sugg':{const f=b.closest('form');f.querySelector('[name=name]').value=b.dataset.v;if(['KWSP','PERKESO','EIS','PCB','Potongan lain'].includes(b.dataset.v)){f.querySelector('[name=type]').value='out';f.querySelectorAll('[data-n=type]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='out'))}f.querySelector('[name=amount]').focus();break}
+ case'l-del':{const p=b.dataset.p,m=state.finMonth;if(p!==ME())break;const l=linesOf(p,m).find(x=>x.id===id);if(!l)break;const ok=await confirmBox(`Delete ${q(esc(l.name))}?`,`Untuk ${monL(m)} je. Bulan lain tak berubah.`);
+  if(ok){db.incomeLines[p][m]=linesOf(p,m).filter(x=>x.id!==id);save();closeSheet();render();toast('Deleted')}else openLine(p,id);break}
+ case'inc-copy':{const p=b.dataset.p,m=state.finMonth;if(p!==ME())break;const from=incomeInfo(p,m).from;if(!from)break;db.incomeLines[p]=db.incomeLines[p]||{};db.incomeLines[p][m]=linesOf(p,from).map(l=>Object.assign({},l,{id:uid()}));save();render();toast(`Copy dari ${monL(from)}. Edit mana yang beza.`);break}
+ case'g-new':openGoal();break;
+ case'g-open':openGoal(id);break;
+ case'ct-del':{const x=db.contribs.find(y=>y.id===id);if(!x||x.who!==ME())break;const gid=x.goalId;const ok=await confirmBox('Delete contribution?',`${fmt2(x.amount)} pada ${dayL(x.date)} akan dibuang. Contribution lain tak terjejas.`);
+  if(ok){db.contribs=db.contribs.filter(y=>y.id!==id);save();render();toast('Contribution deleted')}openGoal(gid);break}
+ case'g-arch':{const g=db.goals.find(x=>x.id===id);if(!g||!canGoal(g))break;const cs=db.contribs.filter(x=>x.goalId===id);
+  const ok=await confirmBox(`Arkib ${q(esc(g.name))}?`,`Goal sorok dari senarai. ${cs.length} contribution (${fmt0(sum(cs.map(x=>x.amount)))}) kekal dalam Records. Boleh restore bila-bila.`,'Arkib');
+  closeSheet();if(ok){g.archived=true;log(`archived goal ${q(g.name)}`,`archived goal ${q(g.name)}`,g.owner==='shared'?[PARTNER()]:[],'goal',g.id);save();render();toast('Goal diarkib')}break}
+ case'g-restore':{const g=db.goals.find(x=>x.id===id);if(!g||!canGoal(g))break;g.archived=false;save();render();toast('Goal restored');break}
+ case'shop-add':{const f=$('form[data-f="shop-quick"]');f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));break}
+ case'm-week':state.mealWeek=dk(addD(pk(state.mealWeek),+b.dataset.d));render();break;
+ case'm-edit':openMeal(b.dataset.k);break;
+ case'm-clear':delete db.meals[b.dataset.k];save();closeSheet();render();toast('Menu cleared');break;
+ case'm-to-shop':{let n=0;missingIng(state.mealWeek).forEach(x=>{if(addToShop(x.name,1))n++});save();state.hTab='shop';render();toast(n?`${n} bahan masuk shopping list`:'Semua dah ada dalam list');break}
+ }
+});
+document.addEventListener('change',e=>{
+ const c=e.target.dataset.c;if(!c)return;
+ if(c==='t-status'){state.tStatus=e.target.value;render()}
+ if(c==='t-date'){state.tDate=e.target.value;render()}
+ if(c==='f-repeat'){$('#fRotate').hidden=e.target.value==='none'}
+ if(c==='fold-sel'){const f=$('#fFold');f.hidden=e.target.value!=='__new';if(!f.hidden)f.querySelector('input').focus()}
+ if(c==='pay-sel'){const f=$('#fPN');f.hidden=e.target.value!=='__new';if(!f.hidden)f.querySelector('input').focus()}
+ if(c==='cat-rename'){const cat=db.categories.find(x=>x.id===e.target.dataset.id),v=e.target.value.trim();if(!cat)return;if(!v){e.target.value=cat.name;toast('Nama kategori tak boleh kosong',true);return}cat.name=v;save();render();toast('Nama kategori updated')}
+});
+document.addEventListener('input',e=>{if(e.target.dataset&&e.target.dataset.c==='r-q'){state.rq=e.target.value;clearTimeout(state.qT);state.qT=setTimeout(()=>{render();const i=$('[data-c="r-q"]');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},250)}
+ if(e.target.id==='fileIn'&&e.target.files[0]){const n=$('#fileName');if(n&&!n.value)n.value=e.target.files[0].name.replace(/\.[^.]+$/,'')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.sheet)closeSheet();if(e.key==='Enter'&&e.target.closest&&e.target.closest('form[data-f="shop-quick"]')){e.preventDefault();const b=$('[data-a="shop-add"]');b&&b.click()}});
+
+/* ================= Forms ================= */
+document.addEventListener('submit',async e=>{
+ const f=e.target.closest('[data-f]');if(!f)return;e.preventDefault();
+ const v=Object.fromEntries(new FormData(f)),k=f.dataset.f,me=ME(),p=PARTNER();
+ const btn=f.querySelector('button[type=submit],button:not([type])');
+ if(k==='task'){
+  const title=(v.title||'').trim();fieldErr('fTitle',!title);fieldErr('fTime',!!v.time&&!v.due);if(!title||(v.time&&!v.due))return;
+  btn&&(btn.disabled=true);
+  const data={title,notes:(v.notes||'').trim(),owner:v.owner,due:v.due||'',time:v.time||'',pri:+v.pri||2,repeat:v.repeat,rotate:v.repeat!=='none'&&!!v.rotate,showCal:!!v.showCal,updatedAt:Date.now()};
+  if(v.id){const t=db.tasks.find(x=>x.id===v.id);if(!t){toast('Task ni dah takde.',true);closeSheet();render();return}
+   const was=t.owner,wasDone=t.status==='done';Object.assign(t,data);
+   if(v.status&&v.status!==t.status){if(v.status==='done'&&!wasDone){completeTask(t)}else{t.status=v.status;if(v.status!=='done'){t.doneAt=0;t.doneBy=''}}}
+   if(t.repeat!=='none'&&!t.seriesId)t.seriesId=t.id;
+   if(was!==t.owner&&t.owner===p)log(`assigned ${OWN[p].n} ${q(t.title)}`,`assigned you ${q(t.title)}`,[p],'task',t.id);
+   toast('Task saved')}
+  else{const t=Object.assign({id:uid(),createdBy:me,createdAt:Date.now(),status:'todo',doneAt:0,doneBy:'',seriesId:''},data);if(t.repeat!=='none')t.seriesId=t.id;db.tasks.push(t);
+   if(t.owner===p)log(`assigned ${OWN[p].n} ${q(t.title)}`,`assigned you ${q(t.title)}`,[p],'task',t.id);else if(t.owner==='shared')log(`added a shared task ${q(t.title)}`,`added a shared task ${q(t.title)}`,[p],'task',t.id);
+   toast('Task ditambah')}
+  save();closeSheet();render();return;
+ }
+ if(k==='item'){
+  const name=(v.name||'').trim(),qty=Number(v.qty),min=Number(v.min);
+  fieldErr('fName',!name);fieldErr('fQty',!(qty>=0));fieldErr('fMin',!(min>=0));if(!name||!(qty>=0)||!(min>=0))return;
+  const dup=db.inventory.find(i=>i.name.trim().toLowerCase()===name.toLowerCase()&&i.id!==v.id);if(dup){fieldErr('fName',true);$('#fName .msg').textContent='Item nama ni dah ada.';return}
+  const data={name,cat:v.cat||'',qty:Math.round(qty),unit:(v.unit||'pcs').trim()||'pcs',min:Math.round(min),notes:(v.notes||'').trim(),updatedAt:Date.now()};
+  if(v.id){const i=db.inventory.find(x=>x.id===v.id);if(!i){toast('Item ni dah takde.',true);closeSheet();render();return}Object.assign(i,data);toast('Item saved')}
+  else{db.inventory.push(Object.assign({id:uid()},data));log(`added ${q(name)} to inventory`,`added ${q(name)} to inventory`,[],'house');toast('Item ditambah')}
+  save();closeSheet();render();return;
+ }
+ if(k==='shop-quick'){
+  const name=(v.name||'').trim();if(!name){toast('Taip nama barang dulu',true);return}
+  const ok=addToShop(name,v.qty,{cat:state.shopCat==='all'?'':state.shopCat});
+  if(!ok){toast(`${name} dah ada dalam list`,true);return}
+  save();render();toast(`${name} ditambah`);setTimeout(()=>{const i=$('form[data-f="shop-quick"] input[name=name]');i&&i.focus()},30);return;
+ }
+ if(k==='shop'){
+  const name=(v.name||'').trim();fieldErr('fName',!name);if(!name)return;
+  const s=db.shopping.find(x=>x.id===v.id);if(!s){toast('Barang ni dah takde.',true);closeSheet();render();return}
+  if(s.bought&&s.stockApplied&&(s.invId!==v.invId||num(s.qty)!==Math.max(1,num(v.qty)))){applyBought(s,false);Object.assign(s,{invId:v.invId,qty:Math.max(1,num(v.qty))});applyBought(s,true)}
+  Object.assign(s,{name,qty:Math.max(1,num(v.qty)),cat:v.cat||'',owner:v.owner||'',invId:v.invId||''});
+  save();closeSheet();render();toast('Barang saved');return;
+ }
+ if(k==='cat-add'){
+  const name=(v.name||'').trim();if(!name){toast('Taip nama kategori',true);return}
+  if(cats(v.area).some(c=>c.name.toLowerCase()===name.toLowerCase())){toast('Kategori ni dah ada',true);return}
+  db.categories.push({id:uid(),area:v.area,name});save();render();openCats(v.area);toast('Kategori ditambah');return;
+ }
+ if(k==='meal'){
+  const name=(v.name||'').trim(),ing=(v.ing||'').split(',').map(x=>x.trim()).filter(Boolean);
+  if(name)db.meals[v.k]={name,ing};else delete db.meals[v.k];save();closeSheet();render();toast('Menu saved');return;
+ }
+ if(k==='line'){
+  const p=v.p,m=state.finMonth;if(p!==ME())return;const name=(v.name||'').trim(),amt=Number(v.amount);
+  fieldErr('fLN',!name);fieldErr('fLA',v.amount===''||!(amt>=0));if(!name||v.amount===''||!(amt>=0))return;
+  db.incomeLines[p]=db.incomeLines[p]||{};const ls=db.incomeLines[p][m]=linesOf(p,m).slice();
+  const data={name,amount:Math.round(amt*100)/100,type:v.type==='out'?'out':'in'};
+  if(v.id){const l=ls.find(x=>x.id===v.id);if(!l){toast('Dah takde.',true);closeSheet();render();return}Object.assign(l,data);toast('Saved')}else{ls.push(Object.assign({id:uid()},data));toast('Ditambah')}
+  save();closeSheet();render();return;
+ }
+ if(k==='override'){
+  const p=v.p;if(p!==ME())return;const m=state.finMonth,raw=String(v.v||'').trim();
+  {db.balOverride[p]=db.balOverride[p]||{};if(raw===''){delete db.balOverride[p][m];toast('Guna baki anggaran')}else if(isNaN(Number(raw))){fieldErr('fOv',true);return}else{db.balOverride[p][m]=Math.round(Number(raw)*100)/100;toast('Baki saved')}}
+  save();render();openBal(p);return;
+ }
+ if(k==='com'){
+  const m=state.finMonth,scope=(e.submitter&&e.submitter.value)||'all';
+  const name=(v.name||'').trim(),amount=Number(v.amount),dd=v.dueDay===''?0:Number(v.dueDay);
+  fieldErr('fCN',!name);fieldErr('fCA',v.amount===''||!(amount>=0));fieldErr('fCD',!(dd===0||(dd>=1&&dd<=31&&Number.isInteger(dd))));
+  if(!name||v.amount===''||!(amount>=0)||!(dd===0||(dd>=1&&dd<=31&&Number.isInteger(dd))))return;
+  let pay=v.pay||'';
+  if(pay==='__new'){const pn=(v.payNew||'').trim();fieldErr('fPN',!pn);if(!pn)return;const ex=cats('pay').find(x=>x.name.toLowerCase()===pn.toLowerCase());if(ex)pay=ex.id;else{const nc={id:uid(),area:'pay',name:pn};db.categories.push(nc);pay=nc.id}}
+  const data={name,amount:Math.round(amount*100)/100,owner:v.owner,dueDay:dd,via:v.via||'',pay};const newRep=v.repeat||'monthly';
+  if(!v.id){const c=Object.assign({id:uid(),repeat:newRep,start:m,endMonth:'',createdBy:ME(),createdAt:Date.now()},data);db.commitments.push(c);
+   if(c.owner===PARTNER()||c.owner==='shared')log(`added commitment ${q(name)}`,`added commitment ${q(name)}`,[PARTNER()],'fin',c.id);toast('Commitment ditambah')}
+  else{const c=db.commitments.find(x=>x.id===v.id);if(!c||!canFin(c)){toast('Tak boleh ubah commitment ni.',true);closeSheet();return}
+   let repMsg='';
+   if(newRep!==c.repeat){if(newRep==='once'){if(c.start>=m){c.repeat='once';c.start=m}else{c.endMonth=m;repMsg=`Stop lepas ${monL(m)}`}}else{c.repeat='monthly';c.endMonth=''}}
+   if(scope==='once'){if(data.name!==c.name||data.owner!==c.owner||data.via!==c.via||data.pay!==(c.pay||'')){toast('Nama, owner & cara bayar: guna “Save mulai bulan ni”.',true);return}
+    const oid=m+'|'+c.id;let o=db.occ.find(x=>x.id===oid);if(!o){o={id:oid,month:m,cid:c.id,status:'unpaid'};db.occ.push(o)}o.amount=data.amount;o.dueDay=data.dueDay;if(o.status==='paid')o.paidAmount=data.amount+sum(kidsOf(c,m).map(k=>baseAmt(k,m)));toast(`Saved untuk ${monL(m)} je`)}
+   else if(scope==='future'&&c.start<m){const nc=Object.assign({},c,data,{id:uid(),start:m,prevIds:[...(c.prevIds||[]),c.id]});c.endMonth=shiftM(m,-1);
+    db.occ.forEach(o=>{if(o.cid===c.id&&o.month>=m){o.cid=nc.id;o.id=o.month+'|'+nc.id}});db.commitments.push(nc);toast(`Saved mulai ${monL(m)}`)}
+   else{Object.assign(c,data);toast(repMsg||'Commitment saved')}
+   if(repMsg&&scope!=='all')toast(repMsg)}
+  save();closeSheet();render();return;
+ }
+ if(k==='goal'){
+  const name=(v.name||'').trim(),target=Number(v.target);fieldErr('fGN',!name);fieldErr('fGT',!(target>0));if(!name||!(target>0))return;
+  const data={name,target:Math.round(target),owner:v.owner,deadline:v.deadline||''};
+  if(v.id){const g=db.goals.find(x=>x.id===v.id);if(!g||!canGoal(g))return;Object.assign(g,data);toast('Goal saved');save();render();openGoal(g.id);return}
+  const g=Object.assign({id:uid(),archived:false,createdBy:ME()},data);db.goals.push(g);if(g.owner==='shared')log(`created goal ${q(name)}`,`created goal ${q(name)}`,[PARTNER()],'goal',g.id);save();render();openGoal(g.id);toast('Goal ditambah');return;
+ }
+ if(k==='contrib'){
+  const g=db.goals.find(x=>x.id===v.gid),amt=Number(v.amount);if(!g||!canGoal(g))return;if(!(amt>0)){toast('Isi jumlah lebih dari 0',true);return}
+  db.contribs.push({id:uid(),goalId:g.id,who:ME(),amount:Math.round(amt*100)/100,date:TK});if(g.owner==='shared')log(`added ${fmt2(amt)} to ${q(g.name)}`,`added ${fmt2(amt)} to ${q(g.name)}`,[PARTNER()],'goal',g.id);
+  save();render();openGoal(g.id);toast('Masuk tabung ✓');return;
+ }
+ if(k==='folder'){
+  const name=(v.name||'').trim();fieldErr('fFoN',!name);if(!name)return;
+  const dup=cats('folder').find(x=>x.name.toLowerCase()===name.toLowerCase()&&x.id!==v.id);if(dup){fieldErr('fFoN',true);$('#fFoN .msg').textContent='Folder nama ni dah ada.';return}
+  if(v.id){const c=db.categories.find(x=>x.id===v.id);if(c)c.name=name;toast('Folder saved')}else{const c={id:uid(),area:'folder',name};db.categories.push(c);state.rFolder=c.id;toast('Folder dibuat')}
+  save();closeSheet();render();return;
+ }
+ if(k==='file'){
+  const me=ME(),p=PARTNER(),name=(v.name||'').trim(),fin=$('#fileIn');fieldErr('fFN',!name);
+  if(!v.id&&IS_GAS){fieldErr('fFile',!(fin&&fin.files[0]));if(!(fin&&fin.files[0]))return}
+  let folder=v.folder||'';if(folder==='__new'){const fnm=(v.folderNew||'').trim();fieldErr('fFold',!fnm);if(!fnm)return;const ex=cats('folder').find(x=>x.name.toLowerCase()===fnm.toLowerCase());if(ex)folder=ex.id;else{const nc={id:uid(),area:'folder',name:fnm};db.categories.push(nc);folder=nc.id}}
+  if(!name)return;
+  const tags=[];if(v.tagP)tags.push(p);if(v.tagMe)tags.push(me);
+  if(v.id){const f=db.files.find(x=>x.id===v.id);if(!f||!canEditFile(f)){toast('Tak boleh ubah file ni.',true);closeSheet();return}const hadP=f.tags.includes(p);
+   Object.assign(f,{name,folder,tags,expiry:v.expiry||'',note:(v.note||'').trim(),updatedAt:Date.now()});if(f.owner===me&&v.visibility)f.visibility=v.visibility;
+   if(!hadP&&tags.includes(p)&&f.visibility!=='private')log(`tagged ${OWN[p].n} on ${q(f.name)}`,`tagged you on ${q(f.name)}`,[p],'file',f.id);toast('File saved')}
+  else{let url='',driveId='';
+   if(IS_GAS&&fin&&fin.files[0]){const btn=$('#fileBtn');btn.disabled=true;btn.textContent='Uploading…';try{const r=await upload(fin.files[0],['Files',catName(folder)]);url=r.url;driveId=r.id}catch(err){btn.disabled=false;btn.textContent='Upload';toast('Upload gagal. Check internet & cuba lagi.',true);return}}
+   const f={id:uid(),name,folder,owner:me,visibility:v.visibility||'shared',tags,expiry:v.expiry||'',note:(v.note||'').trim(),url,driveId,addedAt:Date.now(),updatedAt:Date.now()};db.files.push(f);
+   if(f.visibility!=='private')log(tags.includes(p)?`uploaded ${q(name)} and tagged ${OWN[p].n}`:`uploaded ${q(name)}`,tags.includes(p)?`uploaded ${q(name)} and tagged you`:`uploaded ${q(name)}`,tags.includes(p)?[p]:[],'file',f.id);toast('File uploaded')}
+  save();closeSheet();render();return;
+ }
+ if(k==='names'){
+  const na=(v.name_pa||'').trim(),nb=(v.name_pb||'').trim();fieldErr('fN_pa',!na);fieldErr('fN_pb',!nb);if(!na||!nb)return;
+  if(na.toLowerCase()===nb.toLowerCase()){fieldErr('fN_pb',true);$('#fN_pb .msg').textContent='Nama mesti lain dari orang pertama.';return}
+  db.names={pa:na,pb:nb};db.colors={pa:v.color_pa||DEF_COL.pa,pb:v.color_pb||DEF_COL.pb};applyNames();
+  if(IS_GAS&&ME())save();else if(!IS_GAS)store(KEY,db);
+  if(state.sheet==='names'){closeSheet();render();toast('Saved')}else if(IS_GAS&&ME())showApp();else showLogin();
+  return;
+ }
+ if(k==='prefs'){
+  const ph=String(v.phone||'').replace(/\D/g,'');const bad=ph&&!/^60\d{8,10}$/.test(ph);fieldErr('fPhone',bad);if(bad)return;
+  db.phones[me]=ph;db.brief[me]={on:!!v.on,time:v.time,inc:{tasks:!!v.inc_tasks,bills:!!v.inc_bills,house:!!v.inc_house,cal:!!v.inc_cal}};save();closeSheet();render();toast('Settings saved');return;
+ }
+});
+
+/* ================= Boot ================= */
+mq.addEventListener&&mq.addEventListener('change',()=>{if(prefs.theme==='auto')applyTheme('auto')});
+applyTheme(prefs.theme,prefs.pal||'cocoa');
+if(IS_GAS)bootGas();else if(prefs.user&&OWN[prefs.user])showApp();else showLogin();
+})();
+</script>
+</body>
+</html>
