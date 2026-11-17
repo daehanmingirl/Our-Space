@@ -18,9 +18,3 @@ Dihoskat percuma melalui **Netlify**.
 ## Update demo/landing
 
 Drag folder `site/` semula ke kotak deploy yang sama — Netlify overwrite automatik.
-
-## Nota
-
-- Butang **Beli** dalam landing masih placeholder (`href="#BELI"`) — tukar ke link checkout (ToyyibPay / Stripe Payment Link / Shopee) sebelum jual.
-- Demo ni takde backend; versi penuh jalan dalam Google Apps Script (lihat `SETUP-PEMBELI.md`).
-- Netlify free tier: 100GB bandwidth/bulan — lebih dari cukup untuk demo.
